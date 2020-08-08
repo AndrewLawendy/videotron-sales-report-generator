@@ -31,7 +31,7 @@
   "scripts": {
     "clear-build-cache": "rm -rf .cache/ dist/",
     "dev": "parcel src/index.html",
-    "build": "parcel build  src/index.html --public-url='./' -d prod",
+    "build": "parcel build src/index.html -d prod --public-url ./src/",
     "format": "prettier --write \"src/**/*.{js,jsx,scss}\"",
     "lint": "eslint \"src/**/*.{js,jsx,scss}\" --quiet"
   },
