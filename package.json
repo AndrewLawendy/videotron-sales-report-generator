@@ -32,8 +32,8 @@
     "clear-build-cache": "rm -rf .cache/ dist/",
     "dev": "parcel src/index.html",
     "build": "parcel build  src/index.html --public-url='./'",
-    "format": "prettier --write \"src/**/*.{js,jsx}\"",
-    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet"
+    "format": "prettier --write \"src/**/*.{js,jsx,scss}\"",
+    "lint": "eslint \"src/**/*.{js,jsx,scss}\" --quiet"
   },
   "browserslist": [
     "last 2 Chrome versions"

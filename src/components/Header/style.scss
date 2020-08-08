@@ -1,0 +1,34 @@
+$height: 74px;
+
+header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  height: $height;
+  width: 100%;
+  z-index: 1;
+  background-color: #fff;
+  box-shadow: 0px -6px 7px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .profile {
+    display: flex;
+
+    .logo-container {
+      height: $height;
+      width: $height;
+      background-color: #ffd800;
+      margin-right: 1rem;
+
+      img {
+        height: 100%;
+      }
+    }
+  }
+
+  > button.ui.edit-btn {
+    margin-right: 15px;
+  }
+}
