@@ -104,6 +104,7 @@ dist
 .tern-port
 
 dist/
+prod/
 .DS_Store
 coverage/
 .vscode/
