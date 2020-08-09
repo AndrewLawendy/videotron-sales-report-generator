@@ -6,15 +6,12 @@ import "semantic-ui-css/semantic.min.css";
 
 // Components
 import Header from "./components/Header/Header.jsx";
-import NameAndPr from "./components/NameAndPr/NameAndPr.jsx";
 
 const App = () => {
   return (
     <React.Fragment>
       <Header />
-      <Container>
-        <NameAndPr />
-      </Container>
+      <Container></Container>
     </React.Fragment>
   );
 };

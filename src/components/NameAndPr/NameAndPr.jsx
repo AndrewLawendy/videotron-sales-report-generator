@@ -12,13 +12,13 @@ const userSchema = Yup.object().shape({
   pr: Yup.number().required("Votre PR est obligatoire")
 });
 
-const NameAndPr = () => {
+const NameAndPr = ({ submit, employee }) => {
   return (
     <div id="name-and-pr">
       <Formik
-        initialValues={{ firstName: "", pr: "" }}
+        initialValues={{ firstName: employee?.firstName, pr: employee?.pr }}
         validationSchema={userSchema}
-        onSubmit={values => console.log(values)}
+        onSubmit={submit}
       >
         {({ errors, touched, isValid, dirty }) => (
           <Form>
@@ -26,6 +26,7 @@ const NameAndPr = () => {
               <Field
                 name="firstName"
                 label="Prenom"
+                defaultValue={employee?.firstName}
                 component={SemanticFormikInputField}
               />
               {errors.firstName && touched.firstName ? (
@@ -40,6 +41,7 @@ const NameAndPr = () => {
                 name="pr"
                 label="PR"
                 type="number"
+                defaultValue={employee?.pr}
                 component={SemanticFormikInputField}
               />
               {errors.pr && touched.pr ? (

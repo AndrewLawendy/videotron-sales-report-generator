@@ -13,7 +13,8 @@ export const SemanticFormikInputField = props => {
       setFieldTouched
     },
     label,
-    type = "text"
+    type = "text",
+    defaultValue
   } = props;
 
   return (
@@ -21,6 +22,7 @@ export const SemanticFormikInputField = props => {
       <Input
         label={label}
         type={type}
+        defaultValue={defaultValue}
         onChange={event => {
           setFieldValue(name, event.target.value);
         }}
