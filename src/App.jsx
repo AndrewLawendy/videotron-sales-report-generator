@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Container } from "semantic-ui-react";
 
 import "semantic-ui-css/semantic.min.css";
 import "./MainStyle.scss";
@@ -13,9 +12,7 @@ const App = () => {
   return (
     <React.Fragment>
       <Header />
-      <Container>
-        <FileViewer />
-      </Container>
+      <FileViewer />
     </React.Fragment>
   );
 };

@@ -12,3 +12,12 @@ label[for="addActualFile"] {
     opacity: 0.45;
   }
 }
+
+.ui.table-container {
+  padding-right: 35px;
+  padding-left: 35px;
+
+  .table-wrapper {
+    overflow-x: auto;
+  }
+}

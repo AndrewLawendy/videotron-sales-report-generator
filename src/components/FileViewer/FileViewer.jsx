@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { Button, Table, Message, Confirm } from "semantic-ui-react";
+import { Container, Button, Table, Message, Confirm } from "semantic-ui-react";
+import xlsxParser from "xlsx-parse-json";
 import { Parser } from "json2csv";
 import { saveAs } from "file-saver";
 
 import "./style.scss";
-
-import xlsxParser from "xlsx-parse-json";
+import { headers } from "../../constants";
 
 const FileViewer = () => {
   const [records, setRecords] = useState(getLocaleRecords());
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
-  const headers = records.length > 0 ? Object.keys(records[0]) : [];
 
   function getLocaleRecords() {
     const stringRecords = localStorage.getItem("records");
@@ -54,7 +53,7 @@ const FileViewer = () => {
 
   return (
     <div id="file-viewer">
-      <div>
+      <Container>
         <input
           disabled={records.length > 0}
           type="file"
@@ -87,37 +86,43 @@ const FileViewer = () => {
           icon="external share"
           labelPosition="left"
         />
-      </div>
+        {records.length == 0 && (
+          <Message
+            info
+            header="Pas encore de vents?"
+            content='Clickez sur "Telecharger un fichier actuel" ou "Ajouter nouvelle Vente" pour commencer.'
+          />
+        )}
+      </Container>
 
-      {records.length > 0 ? (
-        <Table singleLine>
-          <Table.Header>
-            <Table.Row>
-              {headers.map((header, index) => (
-                <Table.HeaderCell key={`row-${index}`}>
-                  {header}
-                </Table.HeaderCell>
-              ))}
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {records.map((row, index) => (
-              <Table.Row key={`row-${index}`}>
-                {Object.keys(row).map((key, index) => {
-                  const cell = row[key];
-                  return <Table.Cell key={`cell-${index}`}>{cell}</Table.Cell>;
-                })}
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
-      ) : (
-        <Message
-          info
-          header="Pas encore de vents?"
-          content='Clickez sur "Telecharger un fichier actuel" ou "Ajouter nouvelle Vente" pour commencer.'
-        />
-      )}
+      <Container className="table-container" fluid>
+        {records.length > 0 && (
+          <div className="table-wrapper">
+            <Table singleLine striped selectable>
+              <Table.Header>
+                <Table.Row>
+                  {headers.map((header, index) => (
+                    <Table.HeaderCell key={`row-${index}`}>
+                      {header}
+                    </Table.HeaderCell>
+                  ))}
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {records.map((row, index) => (
+                  <Table.Row key={`row-${index}`}>
+                    {headers.map((header, index) => (
+                      <Table.Cell key={`cell-${index}`}>
+                        {row[header]}
+                      </Table.Cell>
+                    ))}
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+          </div>
+        )}
+      </Container>
 
       <Confirm
         centered={false}
