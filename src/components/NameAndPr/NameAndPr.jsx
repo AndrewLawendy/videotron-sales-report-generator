@@ -8,7 +8,7 @@ import { Label, Button } from "semantic-ui-react";
 import { SemanticFormikInputField } from "../Input/Input.jsx";
 
 const userSchema = Yup.object().shape({
-  firstName: Yup.string().required("Votre nom est Obligatoire"),
+  firstName: Yup.string().required("Votre nom est obligatoire"),
   pr: Yup.number().required("Votre PR est obligatoire")
 });
 
