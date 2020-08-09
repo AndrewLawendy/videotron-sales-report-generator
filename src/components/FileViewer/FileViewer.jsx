@@ -30,10 +30,12 @@ const FileViewer = () => {
   }
 
   const parse = event => {
-    const file = event.target.files[0];
+    const { target } = event;
+    const file = target.files[0];
     xlsxParser.onFileSelection(file).then(data => {
       const firstSheet = Object.keys(data)[0];
       updateRecords(data[firstSheet]);
+      target.value = "";
     });
   };
 
@@ -97,6 +99,7 @@ const FileViewer = () => {
       )}
 
       <Confirm
+        centered={false}
         open={removeDialogOpen}
         content="Vous allez supprimer toutes les ventes enregistrées, voulez-vouz continuer?"
         cancelButton="Non"
