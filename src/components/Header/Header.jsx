@@ -4,7 +4,7 @@ import { Button, Modal } from "semantic-ui-react";
 import "./style.scss";
 
 import Logo from "../../assets/logo-videotron-icon.png";
-import NameAndPr from "../../components/NameAndPr/NameAndPr";
+import NameAndPr from "../../components/NameAndPr/NameAndPr.jsx";
 import { EMPLOYEE } from "../../constants";
 
 const Header = () => {
