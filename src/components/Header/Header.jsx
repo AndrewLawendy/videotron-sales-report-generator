@@ -9,7 +9,7 @@ import { EMPLOYEE } from "../../constants";
 
 const Header = () => {
   const [modalOpen, setModelOpen] = useState(false);
-  const [employee, updateEmployee] = useState(null);
+  const [employee, updateEmployee] = useState({});
 
   const getNameAndPr = () => {
     const nameAndPr = localStorage.getItem(EMPLOYEE);
@@ -38,7 +38,7 @@ const Header = () => {
             <img src={Logo} alt="Videotron Logo" />
           </div>
           <h2>
-            {employee?.firstName}, {employee?.pr}
+            {employee.firstName}, {employee.pr}
           </h2>
         </div>
         <Button
@@ -52,8 +52,8 @@ const Header = () => {
       <Modal
         dimmer={"blurring"}
         centered={false}
-        closeOnEscape={!!employee}
-        closeOnDimmerClick={!!employee}
+        closeOnEscape={Object.keys(employee).length > 0}
+        closeOnDimmerClick={Object.keys(employee).length > 0}
         onClose={() => setModelOpen(false)}
         onOpen={() => setModelOpen(true)}
         open={modalOpen}

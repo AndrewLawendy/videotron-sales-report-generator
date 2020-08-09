@@ -16,7 +16,7 @@ const NameAndPr = ({ submit, employee }) => {
   return (
     <div id="name-and-pr">
       <Formik
-        initialValues={{ firstName: employee?.firstName, pr: employee?.pr }}
+        initialValues={{ firstName: employee.firstName, pr: employee.pr }}
         validationSchema={userSchema}
         onSubmit={submit}
       >
@@ -26,7 +26,7 @@ const NameAndPr = ({ submit, employee }) => {
               <Field
                 name="firstName"
                 label="Prenom"
-                defaultValue={employee?.firstName}
+                defaultValue={employee.firstName}
                 component={SemanticFormikInputField}
               />
               {errors.firstName && touched.firstName ? (
@@ -41,7 +41,7 @@ const NameAndPr = ({ submit, employee }) => {
                 name="pr"
                 label="PR"
                 type="number"
-                defaultValue={employee?.pr}
+                defaultValue={employee.pr}
                 component={SemanticFormikInputField}
               />
               {errors.pr && touched.pr ? (
