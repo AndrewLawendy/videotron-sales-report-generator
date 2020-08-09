@@ -50,6 +50,7 @@ const Header = () => {
         />
       </header>
       <Modal
+        dimmer={"blurring"}
         centered={false}
         closeOnEscape={!!employee}
         closeOnDimmerClick={!!employee}

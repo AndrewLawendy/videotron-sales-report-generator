@@ -1,0 +1,14 @@
+#addActualFile {
+    position: absolute;
+    visibility: hidden;
+    z-index: -1;
+}
+
+label[for="addActualFile"] {
+    cursor: pointer;
+
+    &.disabled {
+        cursor: default;
+        opacity: .45;
+    }
+}
