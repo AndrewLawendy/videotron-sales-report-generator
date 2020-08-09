@@ -20,6 +20,7 @@ export const SemanticFormikInputField = props => {
   return (
     <Form.Field>
       <Input
+        fluid
         label={label}
         type={type}
         defaultValue={defaultValue}
