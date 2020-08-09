@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Button, Table, Message, Confirm } from "semantic-ui-react";
+import { Parser } from "json2csv";
+import { saveAs } from "file-saver";
 
 import "./style.scss";
 
@@ -27,6 +29,17 @@ const FileViewer = () => {
 
   function clearRecords() {
     setLocalRecords([]);
+  }
+
+  function exportFile() {
+    const jsonToCsvParser = new Parser();
+    const records = getLocaleRecords();
+    const csv = jsonToCsvParser.parse(records);
+    const csvFile = new File(
+      [csv],
+      `ventes-${new Date().toLocaleDateString()}.csv`
+    );
+    saveAs(csvFile);
   }
 
   const parse = event => {
@@ -66,6 +79,14 @@ const FileViewer = () => {
           Vider le fichier
         </Button>
         <Button positive>Ajouter nouvelle Vente</Button>
+        <Button
+          onClick={exportFile}
+          disabled={records.length === 0}
+          content="Export"
+          color="yellow"
+          icon="external share"
+          labelPosition="left"
+        />
       </div>
 
       {records.length > 0 ? (
