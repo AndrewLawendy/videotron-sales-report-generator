@@ -1,13 +1,33 @@
 import React, { useState } from "react";
-import { Button, Table, Message } from "semantic-ui-react";
+import { Button, Table, Message, Confirm } from "semantic-ui-react";
 
 import "./style.scss";
 
 import xlsxParser from "xlsx-parse-json";
 
 const FileViewer = () => {
-  const [records, updateRecords] = useState([]);
+  const [records, setRecords] = useState(getLocaleRecords());
+  const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const headers = records.length > 0 ? Object.keys(records[0]) : [];
+
+  function getLocaleRecords() {
+    const stringRecords = localStorage.getItem("records");
+    return stringRecords != null ? JSON.parse(stringRecords) : [];
+  }
+
+  function setLocalRecords(records) {
+    const stringRecords = JSON.stringify(records);
+    localStorage.setItem("records", stringRecords);
+    setRecords(records);
+  }
+
+  function updateRecords(records) {
+    setLocalRecords(records);
+  }
+
+  function clearRecords() {
+    setLocalRecords([]);
+  }
 
   const parse = event => {
     const file = event.target.files[0];
@@ -34,7 +54,13 @@ const FileViewer = () => {
         >
           Telecharger un fichier actuel
         </label>
-        <Button negative disabled={records.length === 0}>
+        <Button
+          onClick={() => {
+            setRemoveDialogOpen(true);
+          }}
+          negative
+          disabled={records.length === 0}
+        >
           Vider le fichier
         </Button>
         <Button positive>Ajouter nouvelle Vente</Button>
@@ -69,6 +95,20 @@ const FileViewer = () => {
           content='Clickez sur "Telecharger un fichier actuel" ou "Ajouter nouvelle Vente" pour commencer.'
         />
       )}
+
+      <Confirm
+        open={removeDialogOpen}
+        content="Vous allez supprimer toutes les ventes enregistrées, voulez-vouz continuer?"
+        cancelButton="Non"
+        confirmButton="Oui"
+        onCancel={() => {
+          setRemoveDialogOpen(false);
+        }}
+        onConfirm={() => {
+          setRemoveDialogOpen(false);
+          clearRecords();
+        }}
+      />
     </div>
   );
 };
