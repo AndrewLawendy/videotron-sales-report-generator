@@ -6,6 +6,7 @@ import { saveAs } from "file-saver";
 
 import "./style.scss";
 import { headers } from "../../constants";
+import AddRecord from "../AddRecord/AddRecord";
 
 const FileViewer = () => {
   const [records, setRecords] = useState(getLocaleRecords());
@@ -104,6 +105,7 @@ const FileViewer = () => {
             content='Clickez sur "Telecharger un fichier actuel" ou "Ajouter nouvelle Vente" pour commencer.'
           />
         )}
+        <AddRecord />
       </Container>
 
       <Container className="table-container" fluid>
