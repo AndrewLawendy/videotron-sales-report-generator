@@ -23,7 +23,13 @@ const FileViewer = () => {
   }
 
   function updateRecords(records) {
-    setLocalRecords(records);
+    const formattedRecords = records.map(row => {
+      return headers.reduce((acc, curr) => {
+        acc[curr] = row[curr];
+        return acc;
+      }, {});
+    });
+    setLocalRecords(formattedRecords);
   }
 
   function clearRecords() {
