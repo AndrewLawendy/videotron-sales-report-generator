@@ -1,3 +1,13 @@
 .ui.container {
   padding: 25px 0;
 }
+
+.field-wrapper {
+  margin-bottom: 20px;
+
+  &.date-picker {
+    .react-datepicker-wrapper {
+      width: 100%;
+    }
+  }
+}
