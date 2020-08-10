@@ -36,13 +36,18 @@ const FileViewer = () => {
     setLocalRecords([]);
   }
 
-  function exportFile() {
+  function prepareCSV() {
     const jsonToCsvParser = new Parser();
     const records = getLocaleRecords();
     const csv = jsonToCsvParser.parse(records);
+    return csv;
+  }
+
+  function exportFile() {
+    const csv = prepareCSV();
     const csvFile = new File(
       [csv],
-      `ventes-${new Date().toLocaleDateString()}.csv`
+      `ventes-mois-${new Date().getMonth() + 1}.csv`
     );
     saveAs(csvFile);
   }
