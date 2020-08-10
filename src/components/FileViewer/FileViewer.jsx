@@ -25,7 +25,7 @@ const FileViewer = () => {
   function updateRecords(records) {
     const formattedRecords = records.map(row => {
       return headers.reduce((acc, curr) => {
-        acc[curr] = row[curr];
+        acc[curr] = row[curr] || "N/A";
         return acc;
       }, {});
     });
