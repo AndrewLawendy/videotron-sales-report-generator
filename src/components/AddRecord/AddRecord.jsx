@@ -183,7 +183,7 @@ const AddRecord = ({ onSubmit }) => {
               <Field
                 name="Numéro de compte Hélix"
                 label="Numéro de compte Hélix"
-                value={values["Numéro de compte Hélix"]}
+                defaultValue={values["Numéro de compte Hélix"]}
                 component={SemanticFormikInputField}
               />
               {errors["Numéro de compte Hélix"] &&
