@@ -77,9 +77,12 @@ const recordSchema = Yup.object().shape({
   "Numéro de compte Clic": Yup.string()
     .matches(clicAccount, "Numéro de compte Clic n'est pas valide!")
     .required("Numéro de compte Clic est obligatoire"),
-  "Numéro de compte Hélix": Yup.string()
-    .matches(helixAccount, "Numéro de compte Hélix n'est pas valide!")
-    .required("Numéro de compte Hélix est obligatoire"),
+  "Numéro de compte Hélix": Yup.string().when("PRODUIT VENDU", {
+    is: prod => prod !== "RTMO",
+    then: Yup.string()
+      .matches(helixAccount, "Numéro de compte Hélix n'est pas valide!")
+      .required("Numéro de compte Hélix est obligatoire")
+  }),
   "Date de l'installationOu livraison": Yup.date().required(
     "Date de l'installation ou livraison est obligatoire"
   )
@@ -92,7 +95,7 @@ const AddRecord = () => {
       validationSchema={recordSchema}
       onSubmit={values => console.log(values)}
     >
-      {({ errors, touched, isValid, dirty }) => (
+      {({ values, errors, touched, isValid, dirty }) => (
         <Form>
           <div className="field-wrapper date-picker">
             <Field
@@ -175,19 +178,21 @@ const AddRecord = () => {
             ) : null}
           </div>
 
-          <div className="field-wrapper">
-            <Field
-              name="Numéro de compte Hélix"
-              label="Numéro de compte Hélix"
-              component={SemanticFormikInputField}
-            />
-            {errors["Numéro de compte Hélix"] &&
-            touched["Numéro de compte Hélix"] ? (
-              <Label basic color="red" pointing>
-                {errors["Numéro de compte Hélix"]}
-              </Label>
-            ) : null}
-          </div>
+          {values["PRODUIT VENDU"] !== "RTMO" && (
+            <div className="field-wrapper">
+              <Field
+                name="Numéro de compte Hélix"
+                label="Numéro de compte Hélix"
+                component={SemanticFormikInputField}
+              />
+              {errors["Numéro de compte Hélix"] &&
+              touched["Numéro de compte Hélix"] ? (
+                <Label basic color="red" pointing>
+                  {errors["Numéro de compte Hélix"]}
+                </Label>
+              ) : null}
+            </div>
+          )}
 
           <div className="field-wrapper date-picker">
             <Field
