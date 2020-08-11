@@ -1,4 +1,5 @@
 export const EMPLOYEE = "employee";
+export const RECORDS = "records";
 
 export const headers = [
   "Date d'appel",

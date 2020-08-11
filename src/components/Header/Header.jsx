@@ -38,7 +38,7 @@ const Header = () => {
             <img src={Logo} alt="Videotron Logo" />
           </div>
           <h2>
-            {employee.firstName}, {employee.pr}
+            {employee["Nom du conseiller"]}, {employee.PR}
           </h2>
         </div>
         <Button

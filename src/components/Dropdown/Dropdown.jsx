@@ -24,6 +24,14 @@ export const SemanticFormikDropdown = props => {
         search
         selection
         options={options}
+        onClose={event => {
+          if (event) {
+            const { target } = event;
+            if (target.nodeName === "INPUT") {
+              setFieldValue(name, target.nextSibling.innerText);
+            }
+          }
+        }}
         onChange={event => {
           setFieldValue(name, event.target.innerText);
         }}

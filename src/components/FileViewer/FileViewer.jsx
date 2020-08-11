@@ -12,24 +12,19 @@ import { Parser } from "json2csv";
 import { saveAs } from "file-saver";
 
 import "./style.scss";
-import { headers } from "../../constants";
+import { RECORDS, EMPLOYEE, headers } from "../../constants";
+import {
+  getLocalItem,
+  setLocalItem,
+  getDateFormat,
+  formatPhoneNumber
+} from "../../utils";
 import AddRecord from "../AddRecord/AddRecord.jsx";
 
 const FileViewer = () => {
-  const [records, setRecords] = useState(getLocaleRecords());
+  const [records, setRecords] = useState(getLocalItem(RECORDS));
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const [addRecordModalOpen, setAddRecordModalOpen] = useState(false);
-
-  function getLocaleRecords() {
-    const stringRecords = localStorage.getItem("records");
-    return stringRecords != null ? JSON.parse(stringRecords) : [];
-  }
-
-  function setLocalRecords(records) {
-    const stringRecords = JSON.stringify(records);
-    localStorage.setItem("records", stringRecords);
-    setRecords(records);
-  }
 
   function updateRecords(records) {
     const formattedRecords = records.map(row => {
@@ -38,16 +33,18 @@ const FileViewer = () => {
         return acc;
       }, {});
     });
-    setLocalRecords(formattedRecords);
+    setLocalItem(RECORDS, formattedRecords);
+    setRecords(formattedRecords);
   }
 
   function clearRecords() {
-    setLocalRecords([]);
+    setLocalItem(RECORDS, []);
+    setRecords([]);
   }
 
   function prepareCSV() {
     const jsonToCsvParser = new Parser();
-    const records = getLocaleRecords();
+    const records = getLocalItem(RECORDS);
     const csv = jsonToCsvParser.parse(records);
     return csv;
   }
@@ -71,14 +68,38 @@ const FileViewer = () => {
     });
   };
 
+  const formatRecord = record => {
+    const clonedRecord = { ...record };
+    clonedRecord["Date d'appel"] = getDateFormat(clonedRecord["Date d'appel"]);
+    clonedRecord["Date de l'installationOu livraison"] = getDateFormat(
+      clonedRecord["Date de l'installationOu livraison"]
+    );
+    clonedRecord["Numéro de téléphone"] = formatPhoneNumber(
+      clonedRecord["Numéro de téléphone"]
+    );
+
+    if (clonedRecord["PRODUIT VENDU"] === "RTMO")
+      delete clonedRecord["Numéro de compte Hélix"];
+
+    return clonedRecord;
+  };
+
   const submitRecord = values => {
-    console.log(values);
+    const records = getLocalItem(RECORDS);
+    const employee = getLocalItem(EMPLOYEE);
+    const newRecord = formatRecord({ ...employee, ...values });
+    records.push(newRecord);
+    updateRecords(records);
+
     setAddRecordModalOpen(false);
   };
 
   return (
     <div id="file-viewer">
       <Container>
+        <Button onClick={() => setAddRecordModalOpen(true)} positive>
+          Ajouter nouvelle Vente
+        </Button>
         <input
           disabled={records.length > 0}
           type="file"
@@ -101,9 +122,6 @@ const FileViewer = () => {
           disabled={records.length === 0}
         >
           Vider le fichier
-        </Button>
-        <Button onClick={() => setAddRecordModalOpen(true)} positive>
-          Ajouter nouvelle Vente
         </Button>
         <Button
           onClick={exportFile}

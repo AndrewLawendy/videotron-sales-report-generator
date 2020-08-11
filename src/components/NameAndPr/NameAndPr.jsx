@@ -6,14 +6,17 @@ import { Label, Button } from "semantic-ui-react";
 import { SemanticFormikInputField } from "../Input/Input.jsx";
 
 const userSchema = Yup.object().shape({
-  firstName: Yup.string().required("Votre nom est obligatoire"),
-  pr: Yup.number().required("Votre PR est obligatoire")
+  "Nom du conseiller": Yup.string().required("Votre nom est obligatoire"),
+  PR: Yup.number().required("Votre PR est obligatoire")
 });
 
 const NameAndPr = ({ submit, employee }) => {
   return (
     <Formik
-      initialValues={{ firstName: employee.firstName, pr: employee.pr }}
+      initialValues={{
+        "Nom du conseiller": employee["Nom du conseiller"],
+        PR: employee.PR
+      }}
       validationSchema={userSchema}
       onSubmit={submit}
     >
@@ -21,29 +24,29 @@ const NameAndPr = ({ submit, employee }) => {
         <Form>
           <div className="field-wrapper">
             <Field
-              name="firstName"
+              name="Nom du conseiller"
               label="Prenom"
-              defaultValue={employee.firstName}
+              defaultValue={employee["Nom du conseiller"]}
               component={SemanticFormikInputField}
             />
-            {errors.firstName && touched.firstName ? (
+            {errors["Nom du conseiller"] && touched["Nom du conseiller"] ? (
               <Label basic color="red" pointing>
-                {errors.firstName}
+                {errors["Nom du conseiller"]}
               </Label>
             ) : null}
           </div>
 
           <div className="field-wrapper">
             <Field
-              name="pr"
+              name="PR"
               label="PR"
               type="number"
-              defaultValue={employee.pr}
+              defaultValue={employee.PR}
               component={SemanticFormikInputField}
             />
-            {errors.pr && touched.pr ? (
+            {errors.PR && touched.PR ? (
               <Label basic color="red" pointing>
-                {errors.pr}
+                {errors.PR}
               </Label>
             ) : null}
           </div>
