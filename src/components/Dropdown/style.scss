@@ -1,0 +1,16 @@
+.dropdown-container {
+    display: flex;
+
+    .label {
+        line-height: 1.4em;
+        margin-right: 0;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
+    .dropdown {
+        flex-grow: 1;
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+    }
+}

@@ -6,7 +6,7 @@ import { saveAs } from "file-saver";
 
 import "./style.scss";
 import { headers } from "../../constants";
-import AddRecord from "../AddRecord/AddRecord";
+import AddRecord from "../AddRecord/AddRecord.jsx";
 
 const FileViewer = () => {
   const [records, setRecords] = useState(getLocaleRecords());
