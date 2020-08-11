@@ -54,8 +54,8 @@ const Header = () => {
         centered={false}
         closeOnEscape={Object.keys(employee).length > 0}
         closeOnDimmerClick={Object.keys(employee).length > 0}
+        closeIcon={Object.keys(employee).length > 0}
         onClose={() => setModelOpen(false)}
-        onOpen={() => setModelOpen(true)}
         open={modalOpen}
       >
         <Modal.Header>Veuillez remplir votre Nom et PR</Modal.Header>

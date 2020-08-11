@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Container, Button, Table, Message, Confirm } from "semantic-ui-react";
+import {
+  Container,
+  Button,
+  Table,
+  Message,
+  Confirm,
+  Modal
+} from "semantic-ui-react";
 import xlsxParser from "xlsx-parse-json";
 import { Parser } from "json2csv";
 import { saveAs } from "file-saver";
@@ -11,6 +18,7 @@ import AddRecord from "../AddRecord/AddRecord.jsx";
 const FileViewer = () => {
   const [records, setRecords] = useState(getLocaleRecords());
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
+  const [addRecordModalOpen, setAddRecordModalOpen] = useState(false);
 
   function getLocaleRecords() {
     const stringRecords = localStorage.getItem("records");
@@ -63,6 +71,11 @@ const FileViewer = () => {
     });
   };
 
+  const submitRecord = values => {
+    console.log(values);
+    setAddRecordModalOpen(false);
+  };
+
   return (
     <div id="file-viewer">
       <Container>
@@ -89,7 +102,9 @@ const FileViewer = () => {
         >
           Vider le fichier
         </Button>
-        <Button positive>Ajouter nouvelle Vente</Button>
+        <Button onClick={() => setAddRecordModalOpen(true)} positive>
+          Ajouter nouvelle Vente
+        </Button>
         <Button
           onClick={exportFile}
           disabled={records.length === 0}
@@ -105,7 +120,6 @@ const FileViewer = () => {
             content='Clickez sur "Telecharger un fichier actuel" ou "Ajouter nouvelle Vente" pour commencer.'
           />
         )}
-        <AddRecord />
       </Container>
 
       <Container className="table-container" fluid>
@@ -151,6 +165,21 @@ const FileViewer = () => {
           clearRecords();
         }}
       />
+
+      <Modal
+        closeIcon
+        dimmer={"blurring"}
+        centered={false}
+        onClose={() => setAddRecordModalOpen(false)}
+        open={addRecordModalOpen}
+      >
+        <Modal.Header>Veuillez remplir les détails de votre vente</Modal.Header>
+        <Modal.Content>
+          <Modal.Description>
+            <AddRecord onSubmit={submitRecord} />
+          </Modal.Description>
+        </Modal.Content>
+      </Modal>
     </div>
   );
 };

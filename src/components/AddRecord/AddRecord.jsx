@@ -88,12 +88,12 @@ const recordSchema = Yup.object().shape({
   )
 });
 
-const AddRecord = () => {
+const AddRecord = ({ onSubmit }) => {
   return (
     <Formik
       initialValues={{}}
       validationSchema={recordSchema}
-      onSubmit={values => console.log(values)}
+      onSubmit={onSubmit}
     >
       {({ values, errors, touched, isValid, dirty }) => (
         <Form>
