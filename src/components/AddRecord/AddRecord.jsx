@@ -28,7 +28,7 @@ const recordSchema = Yup.object().shape({
     .matches(helixAccount, "Numéro de compte Hélix n'est pas valide!")
     .required("Numéro de compte Hélix est obligatoire"),
   "Date de l'installationOu livraison": Yup.date().required(
-    "Date de l'installationOu livraison est obligatoire"
+    "Date de l'installation ou livraison est obligatoire"
   )
 });
 
@@ -112,7 +112,7 @@ const AddRecord = () => {
           <div className="field-wrapper date-picker">
             <Field
               name="Date de l'installationOu livraison"
-              label="Date de l'installationOu livraison"
+              label="Date de l'installation ou livraison"
               component={SemanticFormikDatePicker}
             />
             {errors["Date de l'installationOu livraison"] &&
