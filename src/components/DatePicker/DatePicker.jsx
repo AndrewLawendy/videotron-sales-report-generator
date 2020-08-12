@@ -13,10 +13,12 @@ const ExampleCustomInput = React.forwardRef(function createCustomInput(
 ) {
   return (
     <Input
+      readOnly
       fluid
       ref={ref}
       label={label}
       onClick={onClick}
+      onFocus={onClick}
       defaultValue={value}
     />
   );
