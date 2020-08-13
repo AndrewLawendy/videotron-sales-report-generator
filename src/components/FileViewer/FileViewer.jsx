@@ -11,6 +11,7 @@ import xlsxParser from "xlsx-parse-json";
 import { Parser } from "json2csv";
 import { saveAs } from "file-saver";
 import select from "select";
+import { store } from "react-notifications-component";
 
 import "./style.scss";
 import { RECORDS, EMPLOYEE, headers } from "../../constants";
@@ -27,6 +28,35 @@ const FileViewer = () => {
   const [records, setRecords] = useState(getLocalItem(RECORDS));
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const [addRecordModalOpen, setAddRecordModalOpen] = useState(false);
+
+  const showAddRecordSuccess = () => {
+    store.addNotification({
+      content: (
+        <Message
+          success
+          icon="check"
+          header="Succes"
+          content="Votre vente est ajoutée avec succès"
+        />
+      ),
+      container: "bottom-right",
+      animationOut: ["animationOut"],
+      dismiss: {
+        duration: 3000
+      }
+    });
+  };
+
+  const showCopySuccess = () => {
+    store.addNotification({
+      content: <Message info icon="check" header="Copié" />,
+      container: "bottom-right",
+      animationOut: ["animationOut"],
+      dismiss: {
+        duration: 1700
+      }
+    });
+  };
 
   function updateRecords(records) {
     const formattedRecords = records.map(row => {
@@ -94,6 +124,7 @@ const FileViewer = () => {
     updateRecords(records);
 
     setAddRecordModalOpen(false);
+    showAddRecordSuccess();
   };
 
   const copyRecords = () => {
@@ -101,6 +132,7 @@ const FileViewer = () => {
     select(tbody);
     document.execCommand("copy");
     clearSelection();
+    showCopySuccess();
   };
 
   return (
