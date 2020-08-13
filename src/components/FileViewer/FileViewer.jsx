@@ -10,6 +10,7 @@ import {
 import xlsxParser from "xlsx-parse-json";
 import { Parser } from "json2csv";
 import { saveAs } from "file-saver";
+import select from "select";
 
 import "./style.scss";
 import { RECORDS, EMPLOYEE, headers } from "../../constants";
@@ -17,7 +18,8 @@ import {
   getLocalItem,
   setLocalItem,
   getDateFormat,
-  formatPhoneNumber
+  formatPhoneNumber,
+  clearSelection
 } from "../../utils";
 import AddRecord from "../AddRecord/AddRecord.jsx";
 
@@ -94,6 +96,13 @@ const FileViewer = () => {
     setAddRecordModalOpen(false);
   };
 
+  const copyRecords = () => {
+    const tbody = document.querySelector("tbody");
+    select(tbody);
+    document.execCommand("copy");
+    clearSelection();
+  };
+
   return (
     <div id="file-viewer">
       <Container>
@@ -130,6 +139,13 @@ const FileViewer = () => {
           color="yellow"
           icon="external share"
           labelPosition="left"
+        />
+        <Button
+          primary
+          content="Copie"
+          icon="copy outline"
+          labelPosition="left"
+          onClick={copyRecords}
         />
         {records.length == 0 && (
           <Message

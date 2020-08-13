@@ -28,3 +28,7 @@ export function formatPhoneNumber(number) {
   const digits = number.replace(/\D/g, "");
   return `(${digits.substr(0, 3)})${digits.substr(3, 3)}-${digits.substr(6)}`;
 }
+
+export const clearSelection = () => {
+  window.getSelection().removeAllRanges();
+};
