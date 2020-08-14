@@ -8,9 +8,9 @@ export const headers = [
   "(Genesys ou liste Excel)",
   "Codification de l'interaction",
   "Nombre de Produit",
-  "PRODUIT VENDU",
+  "Produit vendu",
   "Numéro de téléphone",
   "Numéro de compte Clic",
   "Numéro de compte Hélix",
-  "Date de l'installationOu livraison"
+  "Date d'installation ou livraison"
 ];

@@ -210,7 +210,7 @@ const AddRecord = ({ onSubmit }) => {
           </div>
 
           <Button disabled={!dirty || !isValid} secondary>
-            Soumetter
+            Soumettre
           </Button>
         </Form>
       )}

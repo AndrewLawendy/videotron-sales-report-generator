@@ -174,7 +174,7 @@ const FileViewer = () => {
         />
         <Button
           primary
-          content="Copie"
+          content="Copier"
           icon="copy outline"
           labelPosition="left"
           onClick={copyRecords}
@@ -182,7 +182,7 @@ const FileViewer = () => {
         {records.length == 0 && (
           <Message
             info
-            header="Pas encore de vents?"
+            header="Pas encore de ventes?"
             content='Clickez sur "Telecharger un fichier actuel" ou "Ajouter nouvelle Vente" pour commencer.'
           />
         )}
