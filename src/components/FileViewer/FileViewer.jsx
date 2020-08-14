@@ -218,7 +218,9 @@ const FileViewer = () => {
       </Container>
 
       <Confirm
+        className="confirm"
         centered={false}
+        size="large"
         open={removeDialogOpen}
         content="Vous allez supprimer toutes les ventes enregistrées, voulez-vouz continuer?"
         cancelButton="Non"

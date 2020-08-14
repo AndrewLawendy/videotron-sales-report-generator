@@ -22,6 +22,12 @@ label[for="addActualFile"] {
   }
 }
 
+.ui.modal.confirm {
+  >.content {
+    font-size: 1.8rem;
+  }
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
