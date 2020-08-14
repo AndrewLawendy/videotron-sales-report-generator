@@ -17,6 +17,7 @@ import {
   getLocalItem,
   setLocalItem,
   getDateFormat,
+  revertStringDateFormatToDate,
   formatPhoneNumber,
   clearSelection
 } from "../../utils";
@@ -26,16 +27,13 @@ const FileViewer = () => {
   const [records, setRecords] = useState(getLocalItem(RECORDS));
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const [addRecordModalOpen, setAddRecordModalOpen] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(undefined);
+  const [selectedRecordIndex, setSelectedRecordIndex] = useState(-1);
 
-  const showAddRecordSuccess = () => {
+  const showAddRecordSuccess = content => {
     store.addNotification({
       content: (
-        <Message
-          success
-          icon="check"
-          header="Succes"
-          content="Votre vente est ajoutée avec succès"
-        />
+        <Message success icon="check" header="Succes" content={content} />
       ),
       container: "bottom-right",
       animationOut: ["animationOut"],
@@ -85,14 +83,14 @@ const FileViewer = () => {
   const formatRecord = record => {
     const clonedRecord = { ...record };
     clonedRecord["Date d'appel"] = getDateFormat(clonedRecord["Date d'appel"]);
-    clonedRecord["Date de l'installationOu livraison"] = getDateFormat(
-      clonedRecord["Date de l'installationOu livraison"]
+    clonedRecord["Date d'installation ou livraison"] = getDateFormat(
+      clonedRecord["Date d'installation ou livraison"]
     );
     clonedRecord["Numéro de téléphone"] = formatPhoneNumber(
       clonedRecord["Numéro de téléphone"]
     );
 
-    if (clonedRecord["PRODUIT VENDU"] === "RTMO")
+    if (clonedRecord["Produit vendu"] === "RTMO")
       delete clonedRecord["Numéro de compte Hélix"];
 
     return clonedRecord;
@@ -100,13 +98,20 @@ const FileViewer = () => {
 
   const submitRecord = values => {
     const records = getLocalItem(RECORDS);
-    const employee = getLocalItem(EMPLOYEE);
-    const newRecord = formatRecord({ ...employee, ...values });
-    records.push(newRecord);
+    if (selectedRecord == undefined) {
+      const employee = getLocalItem(EMPLOYEE);
+      const newRecord = formatRecord({ ...employee, ...values });
+      records.push(newRecord);
+      showAddRecordSuccess("Votre vente est ajoutée avec succès");
+    } else {
+      const newRecord = formatRecord(values);
+      records.splice(selectedRecordIndex, 1, newRecord);
+      showAddRecordSuccess("Votre vente est mise à jour avec succès");
+    }
     updateRecords(records);
 
     setAddRecordModalOpen(false);
-    showAddRecordSuccess();
+    setSelectedRecord(undefined);
   };
 
   const copyRecords = () => {
@@ -115,6 +120,30 @@ const FileViewer = () => {
     document.execCommand("copy");
     clearSelection();
     showCopySuccess();
+  };
+
+  const formatRecordToFormik = record => {
+    const clonedRecord = { ...record };
+    clonedRecord["Date d'appel"] = revertStringDateFormatToDate(
+      clonedRecord["Date d'appel"]
+    );
+    clonedRecord[
+      "Date d'installation ou livraison"
+    ] = revertStringDateFormatToDate(
+      clonedRecord["Date d'installation ou livraison"]
+    );
+    // clonedRecord["Nombre de Produit"] = Number(
+    //   clonedRecord["Nombre de Produit"]
+    // );
+
+    return clonedRecord;
+  };
+
+  const editRecord = (record, index) => {
+    const formattedRecords = formatRecordToFormik(record);
+    setSelectedRecord(formattedRecords);
+    setSelectedRecordIndex(index);
+    setAddRecordModalOpen(true);
   };
 
   return (
@@ -177,7 +206,10 @@ const FileViewer = () => {
               </Table.Header>
               <Table.Body>
                 {records.map((row, index) => (
-                  <Table.Row key={`row-${index}`}>
+                  <Table.Row
+                    key={`row-${index}`}
+                    onClick={() => editRecord(row, index)}
+                  >
                     {headers.map((header, index) => (
                       <Table.Cell key={`cell-${index}`}>
                         {row[header]}
@@ -212,13 +244,16 @@ const FileViewer = () => {
         closeIcon
         dimmer={"blurring"}
         centered={false}
-        onClose={() => setAddRecordModalOpen(false)}
+        onClose={() => {
+          setAddRecordModalOpen(false);
+          setSelectedRecord(undefined);
+        }}
         open={addRecordModalOpen}
       >
         <Modal.Header>Veuillez remplir les détails de votre vente</Modal.Header>
         <Modal.Content>
           <Modal.Description>
-            <AddRecord onSubmit={submitRecord} />
+            <AddRecord record={selectedRecord} onSubmit={submitRecord} />
           </Modal.Description>
         </Modal.Content>
       </Modal>

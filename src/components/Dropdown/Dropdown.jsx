@@ -7,7 +7,8 @@ export const SemanticFormikDropdown = props => {
   const {
     field: {
       // provided by Formik Field
-      name
+      name,
+      value
     },
     form: {
       // also provided by Formik Field
@@ -24,6 +25,7 @@ export const SemanticFormikDropdown = props => {
         search
         selection
         options={options}
+        value={value}
         onClose={event => {
           if (event) {
             const { target } = event;

@@ -20,6 +20,15 @@ export function getDateFormat(date) {
   return `${day}/${month}/${year}`;
 }
 
+export function revertStringDateFormatToDate(str) {
+  const strFormatted = str.replace(
+    /(\d{2})\/(\d{2})\/(\d{2})/,
+    (_, day, month, year) => `${month}/${day}/${year}`
+  );
+
+  return new Date(strFormatted);
+}
+
 /**
  *
  * @param {string} number

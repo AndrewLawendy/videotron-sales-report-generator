@@ -70,28 +70,28 @@ const recordSchema = Yup.object().shape({
   "Nombre de Produit": Yup.number()
     .min(1, "Le nombre doit être plus grand ou égale à 1")
     .required("Nombre de produit est obligatoire"),
-  "PRODUIT VENDU": Yup.string().required(),
+  "Produit vendu": Yup.string().required(),
   "Numéro de téléphone": Yup.string()
     .matches(northAmericanTelephone, "Le numéro de téléphone n'est pas valide!")
     .required("Le numéro de téléphone est obligatoire"),
   "Numéro de compte Clic": Yup.string()
     .matches(clicAccount, "Numéro de compte Clic n'est pas valide!")
     .required("Numéro de compte Clic est obligatoire"),
-  "Numéro de compte Hélix": Yup.string().when("PRODUIT VENDU", {
+  "Numéro de compte Hélix": Yup.string().when("Produit vendu", {
     is: prod => prod !== "RTMO",
     then: Yup.string()
       .matches(helixAccount, "Numéro de compte Hélix n'est pas valide!")
       .required("Numéro de compte Hélix est obligatoire")
   }),
-  "Date de l'installationOu livraison": Yup.date().required(
-    "Date de l'installation ou livraison est obligatoire"
+  "Date d'installation ou livraison": Yup.date().required(
+    "Date d'installation ou livraison est obligatoire"
   )
 });
 
-const AddRecord = ({ onSubmit }) => {
+const AddRecord = ({ record = {}, onSubmit }) => {
   return (
     <Formik
-      initialValues={{}}
+      initialValues={record}
       validationSchema={recordSchema}
       onSubmit={onSubmit}
     >
@@ -121,6 +121,15 @@ const AddRecord = ({ onSubmit }) => {
 
           <div className="field-wrapper">
             <Field
+              name="Produit vendu"
+              label="Produit vendu"
+              options={productsSoldOptions}
+              component={SemanticFormikDropdown}
+            />
+          </div>
+
+          <div className="field-wrapper">
+            <Field
               name="Codification de l'interaction"
               label="Codification de l'interaction"
               options={interactionCodificationOptions}
@@ -140,15 +149,6 @@ const AddRecord = ({ onSubmit }) => {
                 {errors["Nombre de Produit"]}
               </Label>
             ) : null}
-          </div>
-
-          <div className="field-wrapper">
-            <Field
-              name="PRODUIT VENDU"
-              label="Produit Vendu"
-              options={productsSoldOptions}
-              component={SemanticFormikDropdown}
-            />
           </div>
 
           <div className="field-wrapper">
@@ -178,12 +178,11 @@ const AddRecord = ({ onSubmit }) => {
             ) : null}
           </div>
 
-          {values["PRODUIT VENDU"] !== "RTMO" && (
+          {values["Produit vendu"] !== "RTMO" && (
             <div className="field-wrapper">
               <Field
                 name="Numéro de compte Hélix"
                 label="Numéro de compte Hélix"
-                defaultValue={values["Numéro de compte Hélix"]}
                 component={SemanticFormikInputField}
               />
               {errors["Numéro de compte Hélix"] &&
@@ -197,20 +196,20 @@ const AddRecord = ({ onSubmit }) => {
 
           <div className="field-wrapper date-picker">
             <Field
-              name="Date de l'installationOu livraison"
+              name="Date d'installation ou livraison"
               label="Date de l'installation ou livraison"
               component={SemanticFormikDatePicker}
             />
-            {errors["Date de l'installationOu livraison"] &&
-            touched["Date de l'installationOu livraison"] ? (
+            {errors["Date d'installation ou livraison"] &&
+            touched["Date d'installation ou livraison"] ? (
               <Label basic color="red" pointing>
-                {errors["Date de l'installationOu livraison"]}
+                {errors["Date d'installation ou livraison"]}
               </Label>
             ) : null}
           </div>
 
-          <Button disabled={!dirty || !isValid} secondary>
-            Soumettre
+          <Button type="submit" disabled={!dirty || !isValid} secondary>
+            {Object.keys(record).length == 0 ? "Ajouter" : "Mettre à jour"}
           </Button>
         </Form>
       )}

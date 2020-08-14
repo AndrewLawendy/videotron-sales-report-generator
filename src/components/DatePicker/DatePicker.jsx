@@ -3,10 +3,6 @@ import { Input } from "semantic-ui-react";
 
 import DatePicker from "react-datepicker";
 
-// const CustomInput = ({ label, value, onClick }) => (
-//   <Input fluid onChange={onClick} label={label} defaultValue={value} />
-// );
-
 const ExampleCustomInput = React.forwardRef(function createCustomInput(
   { label, value, onClick },
   ref
@@ -19,7 +15,7 @@ const ExampleCustomInput = React.forwardRef(function createCustomInput(
       label={label}
       onClick={onClick}
       onFocus={onClick}
-      defaultValue={value}
+      value={value}
     />
   );
 });
@@ -45,6 +41,7 @@ export const SemanticFormikDatePicker = props => {
     <DatePicker
       selected={value}
       onChange={date => setFieldValue(name, date)}
+      dateFormat="dd/MM/yyyy"
       onBlur={() => {
         setFieldTouched(name, true);
       }}

@@ -26,7 +26,6 @@ const NameAndPr = ({ submit, employee }) => {
             <Field
               name="Nom du conseiller"
               label="Prenom"
-              defaultValue={employee["Nom du conseiller"]}
               component={SemanticFormikInputField}
             />
             {errors["Nom du conseiller"] && touched["Nom du conseiller"] ? (
@@ -41,7 +40,6 @@ const NameAndPr = ({ submit, employee }) => {
               name="PR"
               label="PR"
               type="number"
-              defaultValue={employee.PR}
               component={SemanticFormikInputField}
             />
             {errors.PR && touched.PR ? (
