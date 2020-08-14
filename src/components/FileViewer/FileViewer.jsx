@@ -132,6 +132,9 @@ const FileViewer = () => {
     ] = revertStringDateFormatToDate(
       clonedRecord["Date d'installation ou livraison"]
     );
+    // clonedRecord["Nombre de Produit"] = Number(
+    //   clonedRecord["Nombre de Produit"]
+    // );
 
     return clonedRecord;
   };
@@ -183,7 +186,7 @@ const FileViewer = () => {
           <Message
             info
             header="Pas encore de ventes?"
-            content='Clickez sur "Ajouter nouvelle Vente" pour commencer.'
+            content='Clickez sur "Telecharger un fichier actuel" ou "Ajouter nouvelle Vente" pour commencer.'
           />
         )}
       </Container>
