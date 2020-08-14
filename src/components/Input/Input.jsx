@@ -14,7 +14,8 @@ export const SemanticFormikInputField = props => {
       setFieldTouched
     },
     label,
-    type = "text"
+    type = "text",
+    readOnly
   } = props;
 
   return (
@@ -24,6 +25,7 @@ export const SemanticFormikInputField = props => {
         label={label}
         type={type}
         value={value}
+        readOnly={readOnly}
         onChange={event => {
           setFieldValue(name, event.target.value);
         }}

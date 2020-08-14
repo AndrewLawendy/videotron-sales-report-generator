@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
@@ -89,8 +89,39 @@ const recordSchema = Yup.object().shape({
 });
 
 const AddRecord = ({ record = {}, onSubmit }) => {
+  const [isRTMO, setIsRTMO] = useState(false);
+
+  const onProductChanged = (value, setter) => {
+    switch (value) {
+      case "INTERNET":
+        setIsRTMO(false);
+        setter("Nombre de Produit", 1);
+        break;
+      case "INT+TV":
+        setIsRTMO(false);
+        setter("Nombre de Produit", 2);
+        break;
+      default:
+        // RTMO
+        setIsRTMO(true);
+        setter("Codification de l'interaction", "RTMO");
+        setter("Nombre de Produit", 1);
+    }
+  };
+
+  const filterCodificationOptions = () => {
+    let filtered;
+    if (isRTMO) {
+      filtered = interactionCodificationOptions.slice(2);
+    } else {
+      filtered = interactionCodificationOptions.slice(0, 2);
+    }
+    return filtered;
+  };
+
   return (
     <Formik
+      enableReinitialize={true}
       initialValues={record}
       validationSchema={recordSchema}
       onSubmit={onSubmit}
@@ -124,6 +155,7 @@ const AddRecord = ({ record = {}, onSubmit }) => {
               name="Produit vendu"
               label="Produit vendu"
               options={productsSoldOptions}
+              onChange={onProductChanged}
               component={SemanticFormikDropdown}
             />
           </div>
@@ -132,7 +164,8 @@ const AddRecord = ({ record = {}, onSubmit }) => {
             <Field
               name="Codification de l'interaction"
               label="Codification de l'interaction"
-              options={interactionCodificationOptions}
+              options={filterCodificationOptions()}
+              disabled={isRTMO}
               component={SemanticFormikDropdown}
             />
           </div>
@@ -142,6 +175,7 @@ const AddRecord = ({ record = {}, onSubmit }) => {
               name="Nombre de Produit"
               label="Nombre de Produit"
               type="number"
+              readOnly={!isRTMO}
               component={SemanticFormikInputField}
             />
             {errors["Nombre de Produit"] && touched["Nombre de Produit"] ? (

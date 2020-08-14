@@ -13,10 +13,13 @@ export const SemanticFormikDropdown = props => {
     form: {
       // also provided by Formik Field
       setFieldValue,
-      setFieldTouched
+      setFieldTouched,
+      values
     },
     label,
-    options
+    options,
+    disabled,
+    onChange = () => {}
   } = props;
   return (
     <div className="dropdown-container">
@@ -24,6 +27,7 @@ export const SemanticFormikDropdown = props => {
       <Dropdown
         search
         selection
+        disabled={disabled}
         options={options}
         value={value}
         onClose={event => {
@@ -36,6 +40,7 @@ export const SemanticFormikDropdown = props => {
         }}
         onChange={event => {
           setFieldValue(name, event.target.innerText);
+          onChange(event.target.innerText, setFieldValue);
         }}
         onBlur={() => {
           setFieldTouched(name, true);
