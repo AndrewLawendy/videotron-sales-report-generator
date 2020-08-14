@@ -8,8 +8,6 @@ import {
   Modal
 } from "semantic-ui-react";
 import xlsxParser from "xlsx-parse-json";
-import { Parser } from "json2csv";
-import { saveAs } from "file-saver";
 import select from "select";
 import { store } from "react-notifications-component";
 
@@ -72,22 +70,6 @@ const FileViewer = () => {
   function clearRecords() {
     setLocalItem(RECORDS, []);
     setRecords([]);
-  }
-
-  function prepareCSV() {
-    const jsonToCsvParser = new Parser();
-    const records = getLocalItem(RECORDS);
-    const csv = jsonToCsvParser.parse(records);
-    return csv;
-  }
-
-  function exportFile() {
-    const csv = prepareCSV();
-    const csvFile = new File(
-      [csv],
-      `ventes-mois-${new Date().getMonth() + 1}.csv`
-    );
-    saveAs(csvFile);
   }
 
   const parse = event => {
@@ -164,14 +146,6 @@ const FileViewer = () => {
         >
           Vider le fichier
         </Button>
-        <Button
-          onClick={exportFile}
-          disabled={records.length === 0}
-          content="Export"
-          color="yellow"
-          icon="external share"
-          labelPosition="left"
-        />
         <Button
           primary
           content="Copier"
