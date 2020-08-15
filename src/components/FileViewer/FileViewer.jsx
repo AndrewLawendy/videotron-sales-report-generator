@@ -132,9 +132,6 @@ const FileViewer = () => {
     ] = revertStringDateFormatToDate(
       clonedRecord["Date d'installation ou livraison"]
     );
-    // clonedRecord["Nombre de Produit"] = Number(
-    //   clonedRecord["Nombre de Produit"]
-    // );
 
     return clonedRecord;
   };
