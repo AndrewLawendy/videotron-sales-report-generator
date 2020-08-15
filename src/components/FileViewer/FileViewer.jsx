@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Container, Button, Message, Confirm, Modal } from "semantic-ui-react";
-import select from "select";
 import { store } from "react-notifications-component";
 
 import "./style.scss";
@@ -9,13 +8,13 @@ import {
   getLocalItem,
   setLocalItem,
   getDateFormat,
-  formatPhoneNumber,
-  clearSelection
+  formatPhoneNumber
 } from "../../utils";
 import AddRecord from "../AddRecord/AddRecord.jsx";
 import RecordsFilter from "../RecordsFilter/RecordsFilter.jsx";
 import RecordsTable from "../RecordsTable/RecordsTable.jsx";
 import UploadFile from "../UploadFile/UploadFile.jsx";
+import CopyRecords from "../CopyRecords/CopyRecords.jsx";
 
 const FileViewer = () => {
   const [records, setRecords] = useState(getLocalItem(RECORDS));
@@ -34,17 +33,6 @@ const FileViewer = () => {
       animationOut: ["animationOut"],
       dismiss: {
         duration: 3000
-      }
-    });
-  };
-
-  const showCopySuccess = () => {
-    store.addNotification({
-      content: <Message info icon="check" header="Copié" />,
-      container: "bottom-right",
-      animationOut: ["animationOut"],
-      dismiss: {
-        duration: 1700
       }
     });
   };
@@ -99,14 +87,6 @@ const FileViewer = () => {
     setSelectedRecord(undefined);
   };
 
-  const copyRecords = () => {
-    const tbody = document.querySelector("tbody");
-    select(tbody);
-    document.execCommand("copy");
-    clearSelection();
-    showCopySuccess();
-  };
-
   return (
     <div id="file-viewer">
       <Container>
@@ -127,14 +107,8 @@ const FileViewer = () => {
         >
           Vider le fichier
         </Button>
-        <Button
-          primary
-          content="Copier"
-          icon="copy outline"
-          labelPosition="left"
-          disabled={records.length === 0}
-          onClick={copyRecords}
-        />
+        <CopyRecords disabled={records.length === 0} />
+
         <RecordsFilter setRecords={setRecords} setIsFiltered={setIsFiltered} />
         {!isFiltered && records.length == 0 && (
           <Message
