@@ -114,7 +114,7 @@ const FileViewer = () => {
           Ajouter nouvelle Vente
         </Button>
         <UploadFile
-          records={records}
+          noRecords={records.length > 0}
           isFiltered={isFiltered}
           updateRecords={updateRecords}
         />

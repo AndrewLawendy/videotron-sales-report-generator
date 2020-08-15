@@ -3,7 +3,7 @@ import xlsxParser from "xlsx-parse-json";
 
 import "./style.scss";
 
-const UploadFile = ({ records, isFiltered, updateRecords }) => {
+const UploadFile = ({ noRecords, isFiltered, updateRecords }) => {
   const parse = event => {
     const { target } = event;
     const file = target.files[0];
@@ -17,14 +17,14 @@ const UploadFile = ({ records, isFiltered, updateRecords }) => {
   return (
     <React.Fragment>
       <input
-        disabled={isFiltered || records.length > 0}
+        disabled={isFiltered || noRecords}
         type="file"
         id="addActualFile"
         onChange={parse}
       />
       <label
         className={`ui secondary button ${
-          isFiltered || records.length > 0 ? "disabled" : ""
+          isFiltered || noRecords ? "disabled" : ""
         }`}
         htmlFor="addActualFile"
       >
