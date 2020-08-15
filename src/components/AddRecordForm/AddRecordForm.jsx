@@ -6,13 +6,15 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { Label, Button } from "semantic-ui-react";
 
+import { headers } from "../../constants";
+
 import { SemanticFormikInputField } from "../Input/Input.jsx";
 import { SemanticFormikDatePicker } from "../DatePicker/DatePicker.jsx";
 import { SemanticFormikDropdown } from "../Dropdown/Dropdown.jsx";
 
-const northAmericanTelephone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-const clicAccount = /^\d{8}(-\d{3}-\d)?$/;
-const helixAccount = /^\d{12}$/;
+const northAmericanTelephoneRegexp = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+const clicAccountRegexp = /^\d{8}(-\d{3}-\d)?$/;
+const helixAccountRegexp = /^\d{12}$/;
 
 const interactionCodificationOptions = [
   {
@@ -63,27 +65,44 @@ const genesysExcelOptions = [
   }
 ];
 
+const [
+  callDate,
+  ,
+  ,
+  genesysOrExcel,
+  interactionCodification,
+  productsNumber,
+  soldProducts,
+  phoneNumber,
+  clicAccountNumber,
+  helixAccountNumber,
+  installationDate
+] = headers;
+
 const recordSchema = Yup.object().shape({
-  "Date d'appel": Yup.date().required("Date d'appel est obligatoire"),
-  "(Genesys ou liste Excel)": Yup.string().required(),
-  "Codification de l'interaction": Yup.string().required(),
-  "Nombre de Produit": Yup.number()
+  [callDate]: Yup.date().required("Date d'appel est obligatoire"),
+  [genesysOrExcel]: Yup.string().required(),
+  [interactionCodification]: Yup.string().required(),
+  [productsNumber]: Yup.number()
     .min(1, "Le nombre doit être plus grand ou égale à 1")
     .required("Nombre de produit est obligatoire"),
-  "Produit vendu": Yup.string().required(),
-  "Numéro de téléphone": Yup.string()
-    .matches(northAmericanTelephone, "Le numéro de téléphone n'est pas valide!")
+  [soldProducts]: Yup.string().required(),
+  [phoneNumber]: Yup.string()
+    .matches(
+      northAmericanTelephoneRegexp,
+      "Le numéro de téléphone n'est pas valide!"
+    )
     .required("Le numéro de téléphone est obligatoire"),
-  "Numéro de compte Clic": Yup.string()
-    .matches(clicAccount, "Numéro de compte Clic n'est pas valide!")
+  [clicAccountNumber]: Yup.string()
+    .matches(clicAccountRegexp, "Numéro de compte Clic n'est pas valide!")
     .required("Numéro de compte Clic est obligatoire"),
-  "Numéro de compte Hélix": Yup.string().when("Produit vendu", {
+  [helixAccountNumber]: Yup.string().when(soldProducts, {
     is: prod => prod !== "RTMO",
     then: Yup.string()
-      .matches(helixAccount, "Numéro de compte Hélix n'est pas valide!")
+      .matches(helixAccountRegexp, "Numéro de compte Hélix n'est pas valide!")
       .required("Numéro de compte Hélix est obligatoire")
   }),
-  "Date d'installation ou livraison": Yup.date().required(
+  [installationDate]: Yup.date().required(
     "Date d'installation ou livraison est obligatoire"
   )
 });
@@ -95,17 +114,17 @@ const AddRecord = ({ record = {}, onSubmit }) => {
     switch (value) {
       case "INTERNET":
         setIsRTMO(false);
-        setter("Nombre de Produit", 1);
+        setter(productsNumber, 1);
         break;
       case "INT+TV":
         setIsRTMO(false);
-        setter("Nombre de Produit", 2);
+        setter(productsNumber, 2);
         break;
       default:
         // RTMO
         setIsRTMO(true);
-        setter("Codification de l'interaction", "RTMO");
-        setter("Nombre de Produit", 1);
+        setter(interactionCodification, "RTMO");
+        setter(productsNumber, 1);
     }
   };
 
@@ -130,20 +149,20 @@ const AddRecord = ({ record = {}, onSubmit }) => {
         <Form>
           <div className="field-wrapper date-picker">
             <Field
-              name="Date d'appel"
-              label="Date d'appel"
+              name={callDate}
+              label={callDate}
               component={SemanticFormikDatePicker}
             />
-            {errors["Date d'appel"] && touched["Date d'appel"] ? (
+            {errors[callDate] && touched[callDate] ? (
               <Label basic color="red" pointing>
-                {errors["Date d'appel"]}
+                {errors[callDate]}
               </Label>
             ) : null}
           </div>
 
           <div className="field-wrapper">
             <Field
-              name="(Genesys ou liste Excel)"
+              name={genesysOrExcel}
               label="Genesys ou liste Excel"
               options={genesysExcelOptions}
               component={SemanticFormikDropdown}
@@ -152,8 +171,8 @@ const AddRecord = ({ record = {}, onSubmit }) => {
 
           <div className="field-wrapper">
             <Field
-              name="Produit vendu"
-              label="Produit vendu"
+              name={soldProducts}
+              label={soldProducts}
               options={productsSoldOptions}
               onChange={onProductChanged}
               component={SemanticFormikDropdown}
@@ -162,8 +181,8 @@ const AddRecord = ({ record = {}, onSubmit }) => {
 
           <div className="field-wrapper">
             <Field
-              name="Codification de l'interaction"
-              label="Codification de l'interaction"
+              name={interactionCodification}
+              label={interactionCodification}
               options={filterCodificationOptions()}
               disabled={isRTMO}
               component={SemanticFormikDropdown}
@@ -172,57 +191,55 @@ const AddRecord = ({ record = {}, onSubmit }) => {
 
           <div className="field-wrapper">
             <Field
-              name="Nombre de Produit"
-              label="Nombre de Produit"
+              name={productsNumber}
+              label={productsNumber}
               type="number"
               readOnly={!isRTMO}
               component={SemanticFormikInputField}
             />
-            {errors["Nombre de Produit"] && touched["Nombre de Produit"] ? (
+            {errors[productsNumber] && touched[productsNumber] ? (
               <Label basic color="red" pointing>
-                {errors["Nombre de Produit"]}
+                {errors[productsNumber]}
               </Label>
             ) : null}
           </div>
 
           <div className="field-wrapper">
             <Field
-              name="Numéro de téléphone"
-              label="Numéro de téléphone"
+              name={phoneNumber}
+              label={phoneNumber}
               component={SemanticFormikInputField}
             />
-            {errors["Numéro de téléphone"] && touched["Numéro de téléphone"] ? (
+            {errors[phoneNumber] && touched[phoneNumber] ? (
               <Label basic color="red" pointing>
-                {errors["Numéro de téléphone"]}
+                {errors[phoneNumber]}
               </Label>
             ) : null}
           </div>
 
           <div className="field-wrapper">
             <Field
-              name="Numéro de compte Clic"
-              label="Numéro de compte Clic"
+              name={clicAccountNumber}
+              label={clicAccountNumber}
               component={SemanticFormikInputField}
             />
-            {errors["Numéro de compte Clic"] &&
-            touched["Numéro de compte Clic"] ? (
+            {errors[clicAccountNumber] && touched[clicAccountNumber] ? (
               <Label basic color="red" pointing>
-                {errors["Numéro de compte Clic"]}
+                {errors[clicAccountNumber]}
               </Label>
             ) : null}
           </div>
 
-          {values["Produit vendu"] !== "RTMO" && (
+          {values[soldProducts] !== "RTMO" && (
             <div className="field-wrapper">
               <Field
-                name="Numéro de compte Hélix"
-                label="Numéro de compte Hélix"
+                name={helixAccountNumber}
+                label={helixAccountNumber}
                 component={SemanticFormikInputField}
               />
-              {errors["Numéro de compte Hélix"] &&
-              touched["Numéro de compte Hélix"] ? (
+              {errors[helixAccountNumber] && touched[helixAccountNumber] ? (
                 <Label basic color="red" pointing>
-                  {errors["Numéro de compte Hélix"]}
+                  {errors[helixAccountNumber]}
                 </Label>
               ) : null}
             </div>
@@ -230,14 +247,13 @@ const AddRecord = ({ record = {}, onSubmit }) => {
 
           <div className="field-wrapper date-picker">
             <Field
-              name="Date d'installation ou livraison"
-              label="Date de l'installation ou livraison"
+              name={installationDate}
+              label={installationDate}
               component={SemanticFormikDatePicker}
             />
-            {errors["Date d'installation ou livraison"] &&
-            touched["Date d'installation ou livraison"] ? (
+            {errors[installationDate] && touched[installationDate] ? (
               <Label basic color="red" pointing>
-                {errors["Date d'installation ou livraison"]}
+                {errors[installationDate]}
               </Label>
             ) : null}
           </div>
