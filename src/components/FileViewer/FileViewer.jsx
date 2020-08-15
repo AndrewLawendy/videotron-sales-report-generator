@@ -11,6 +11,7 @@ import ClearRecords from "../ClearRecords/ClearRecords.jsx";
 import CopyRecords from "../CopyRecords/CopyRecords.jsx";
 import RecordsFilter from "../RecordsFilter/RecordsFilter.jsx";
 import RecordsTable from "../RecordsTable/RecordsTable.jsx";
+import InstallationDayReminder from "../InstallationDayReminder/InstallationDayReminder.jsx";
 
 const FileViewer = () => {
   const [records, setRecords] = useState(getLocalItem(RECORDS));
@@ -31,7 +32,7 @@ const FileViewer = () => {
   }
 
   return (
-    <div id="file-viewer">
+    <React.Fragment>
       <Container>
         <AddRecord
           setAddRecordModalOpen={setAddRecordModalOpen}
@@ -77,7 +78,9 @@ const FileViewer = () => {
           />
         )}
       </Container>
-    </div>
+
+      <InstallationDayReminder />
+    </React.Fragment>
   );
 };
 
