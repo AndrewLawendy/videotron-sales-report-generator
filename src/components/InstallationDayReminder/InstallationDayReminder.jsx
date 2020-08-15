@@ -40,11 +40,14 @@ const InstallationDayReminder = () => {
   };
 
   const initPage = () => {
+    let timeDifference;
     if (isEarly(reminderDate)) {
-      const timeDifference = reminderDate - new Date().getTime();
-
-      setTimeout(checkTodaysRecords, timeDifference);
+      timeDifference = reminderDate - new Date().getTime();
+    } else {
+      const tomorrowsReminder = new Date().setHours(38, 0, 0, 0);
+      timeDifference = tomorrowsReminder - new Date().getTime();
     }
+    setTimeout(checkTodaysRecords, timeDifference);
   };
 
   useEffect(initPage, []);
