@@ -179,6 +179,7 @@ const FileViewer = () => {
           content="Copier"
           icon="copy outline"
           labelPosition="left"
+          disabled={records.length === 0}
           onClick={copyRecords}
         />
         <RecordsFilter setRecords={setRecords} setIsFiltered={setIsFiltered} />
