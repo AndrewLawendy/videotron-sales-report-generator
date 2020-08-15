@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Button, Message, Confirm, Modal } from "semantic-ui-react";
+import { Container, Button, Message, Modal } from "semantic-ui-react";
 import { store } from "react-notifications-component";
 
 import "./style.scss";
@@ -14,12 +14,12 @@ import AddRecord from "../AddRecord/AddRecord.jsx";
 import RecordsFilter from "../RecordsFilter/RecordsFilter.jsx";
 import RecordsTable from "../RecordsTable/RecordsTable.jsx";
 import UploadFile from "../UploadFile/UploadFile.jsx";
+import ClearRecords from "../ClearRecords/ClearRecords.jsx";
 import CopyRecords from "../CopyRecords/CopyRecords.jsx";
 
 const FileViewer = () => {
   const [records, setRecords] = useState(getLocalItem(RECORDS));
   const [isFiltered, setIsFiltered] = useState(false);
-  const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const [addRecordModalOpen, setAddRecordModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(undefined);
   const [selectedRecordIndex, setSelectedRecordIndex] = useState(-1);
@@ -46,11 +46,6 @@ const FileViewer = () => {
     });
     setLocalItem(RECORDS, formattedRecords);
     setRecords(formattedRecords);
-  }
-
-  function clearRecords() {
-    setLocalItem(RECORDS, []);
-    setRecords([]);
   }
 
   const formatRecord = record => {
@@ -98,15 +93,7 @@ const FileViewer = () => {
           isFiltered={isFiltered}
           updateRecords={updateRecords}
         />
-        <Button
-          onClick={() => {
-            setRemoveDialogOpen(true);
-          }}
-          negative
-          disabled={records.length === 0}
-        >
-          Vider le fichier
-        </Button>
+        <ClearRecords disabled={records.length === 0} setRecords={setRecords} />
         <CopyRecords disabled={records.length === 0} />
 
         <RecordsFilter setRecords={setRecords} setIsFiltered={setIsFiltered} />
@@ -137,23 +124,6 @@ const FileViewer = () => {
           />
         )}
       </Container>
-
-      <Confirm
-        className="confirm"
-        centered={false}
-        size="large"
-        open={removeDialogOpen}
-        content="Vous allez supprimer toutes les ventes enregistrées, voulez-vouz continuer?"
-        cancelButton="Non"
-        confirmButton="Oui"
-        onCancel={() => {
-          setRemoveDialogOpen(false);
-        }}
-        onConfirm={() => {
-          setRemoveDialogOpen(false);
-          clearRecords();
-        }}
-      />
 
       <Modal
         closeIcon
