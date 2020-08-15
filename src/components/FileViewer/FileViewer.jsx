@@ -26,6 +26,7 @@ import RecordsFilter from "../RecordsFilter/RecordsFilter.jsx";
 
 const FileViewer = () => {
   const [records, setRecords] = useState(getLocalItem(RECORDS));
+  const [isFiltered, setIsFiltered] = useState(false);
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const [addRecordModalOpen, setAddRecordModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(undefined);
@@ -151,14 +152,14 @@ const FileViewer = () => {
           Ajouter nouvelle Vente
         </Button>
         <input
-          disabled={records.length > 0}
+          disabled={isFiltered || records.length > 0}
           type="file"
           id="addActualFile"
           onChange={parse}
         />
         <label
           className={`ui secondary button ${
-            records.length > 0 ? "disabled" : ""
+            isFiltered || records.length > 0 ? "disabled" : ""
           }`}
           htmlFor="addActualFile"
         >
@@ -180,12 +181,20 @@ const FileViewer = () => {
           labelPosition="left"
           onClick={copyRecords}
         />
-        <RecordsFilter setRecords={setRecords} />
-        {records.length == 0 && (
+        <RecordsFilter setRecords={setRecords} setIsFiltered={setIsFiltered} />
+        {!isFiltered && records.length == 0 && (
           <Message
             info
             header="Pas encore de ventes?"
             content='Clickez sur "Telecharger un fichier actuel" ou "Ajouter nouvelle Vente" pour commencer.'
+          />
+        )}
+
+        {isFiltered && records.length == 0 && (
+          <Message
+            info
+            header="Pas encore de ventes filtrées?"
+            content="Changer les options de filtrage afin d'afficher vos ventes"
           />
         )}
       </Container>

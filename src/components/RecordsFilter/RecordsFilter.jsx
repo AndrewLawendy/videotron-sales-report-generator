@@ -6,7 +6,7 @@ import { getLocalItem } from "../../utils";
 
 import "./style.scss";
 
-const RecordsFilter = ({ setRecords }) => {
+const RecordsFilter = ({ setRecords, setIsFiltered }) => {
   const [callDates, setCallDates] = useState([]);
   const [installationDates, setInstallationDates] = useState([]);
   const [soldProducts, setSoldProducts] = useState([]);
@@ -36,6 +36,14 @@ const RecordsFilter = ({ setRecords }) => {
       return true;
     };
 
+    const isFiltered = () => {
+      return (
+        callDates.length > 0 ||
+        soldProducts.length > 0 ||
+        installationDates.length > 0
+      );
+    };
+
     const filteredRecords = allRecords.filter(record => {
       return (
         filterByCallDates(record["Date d'appel"]) &&
@@ -45,6 +53,7 @@ const RecordsFilter = ({ setRecords }) => {
     });
 
     setRecords(filteredRecords);
+    setIsFiltered(isFiltered());
   };
 
   useEffect(filter, [callDates, soldProducts, installationDates]);
@@ -83,6 +92,7 @@ const RecordsFilter = ({ setRecords }) => {
           clearable
           search
           selection
+          disabled={records.length == 0}
           onChange={(_, { value }) => setCallDates(value)}
           options={uniqueOptions(callDatesOptions)}
         />
@@ -97,6 +107,7 @@ const RecordsFilter = ({ setRecords }) => {
           clearable
           search
           selection
+          disabled={records.length == 0}
           onChange={(_, { value }) => setSoldProducts(value)}
           options={uniqueOptions(soldProductsOptions)}
         />
@@ -111,6 +122,7 @@ const RecordsFilter = ({ setRecords }) => {
           clearable
           search
           selection
+          disabled={records.length == 0}
           onChange={(_, { value }) => setInstallationDates(value)}
           options={uniqueOptions(installationDatesOptions)}
         />
