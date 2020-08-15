@@ -22,6 +22,7 @@ import {
   clearSelection
 } from "../../utils";
 import AddRecord from "../AddRecord/AddRecord.jsx";
+import RecordsFilter from "../RecordsFilter/RecordsFilter.jsx";
 
 const FileViewer = () => {
   const [records, setRecords] = useState(getLocalItem(RECORDS));
@@ -33,7 +34,7 @@ const FileViewer = () => {
   const showAddRecordSuccess = content => {
     store.addNotification({
       content: (
-        <Message success icon="check" header="Succes" content={content} />
+        <Message success icon="check" header="Succès" content={content} />
       ),
       container: "bottom-right",
       animationOut: ["animationOut"],
@@ -179,6 +180,7 @@ const FileViewer = () => {
           labelPosition="left"
           onClick={copyRecords}
         />
+        <RecordsFilter setRecords={setRecords} />
         {records.length == 0 && (
           <Message
             info
@@ -202,13 +204,13 @@ const FileViewer = () => {
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {records.map((row, index) => (
+                {records.map((row, rowIndex) => (
                   <Table.Row
-                    key={`row-${index}`}
-                    onClick={() => editRecord(row, index)}
+                    key={`row-${rowIndex}`}
+                    onClick={() => editRecord(row, rowIndex)}
                   >
-                    {headers.map((header, index) => (
-                      <Table.Cell key={`cell-${index}`}>
+                    {headers.map((header, cellIndex) => (
+                      <Table.Cell key={`cell-${rowIndex}-${cellIndex}`}>
                         {row[header]}
                       </Table.Cell>
                     ))}
