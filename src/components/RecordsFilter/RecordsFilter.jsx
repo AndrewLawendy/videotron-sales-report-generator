@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react";
 
-import { RECORDS } from "../../constants";
+import { headers, RECORDS } from "../../constants";
 import { getLocalItem } from "../../utils";
 
 import "./style.scss";
 
+const [
+  callDateHeader,
+  ,
+  ,
+  ,
+  ,
+  ,
+  soldProductsHeader,
+  ,
+  ,
+  ,
+  installationDateHeader
+] = headers;
+
 const RecordsFilter = ({ setRecords, setIsFiltered }) => {
-  const [callDates, setCallDates] = useState([]);
-  const [installationDates, setInstallationDates] = useState([]);
+  const [callDate, setCallDate] = useState([]);
+  const [installationDate, setInstallationDate] = useState([]);
   const [soldProducts, setSoldProducts] = useState([]);
 
   const records = getLocalItem(RECORDS);
@@ -16,15 +30,15 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
   const filter = () => {
     const allRecords = getLocalItem(RECORDS);
     const filterByCallDates = record => {
-      if (callDates.length > 0) {
-        return callDates.includes(record);
+      if (callDate.length > 0) {
+        return callDate.includes(record);
       }
       return true;
     };
 
     const filterByInstallationDates = record => {
-      if (installationDates.length > 0) {
-        return installationDates.includes(record);
+      if (installationDate.length > 0) {
+        return installationDate.includes(record);
       }
       return true;
     };
@@ -38,17 +52,17 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
 
     const isFiltered = () => {
       return (
-        callDates.length > 0 ||
+        callDate.length > 0 ||
         soldProducts.length > 0 ||
-        installationDates.length > 0
+        installationDate.length > 0
       );
     };
 
     const filteredRecords = allRecords.filter(record => {
       return (
-        filterByCallDates(record["Date d'appel"]) &&
-        filterByInstallationDates(record["Date d'installation ou livraison"]) &&
-        filterBySoldProducts(record["Produit vendu"])
+        filterByCallDates(record[callDateHeader]) &&
+        filterByInstallationDates(record[installationDateHeader]) &&
+        filterBySoldProducts(record[soldProductsHeader])
       );
     });
 
@@ -56,7 +70,7 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
     setIsFiltered(isFiltered());
   };
 
-  useEffect(filter, [callDates, soldProducts, installationDates]);
+  useEffect(filter, [callDate, soldProducts, installationDate]);
 
   const createDropDownOption = token => ({
     key: token,
@@ -72,20 +86,20 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
   };
 
   const callDatesOptions = records.map(record =>
-    createDropDownOption(record["Date d'appel"])
+    createDropDownOption(record[callDateHeader])
   );
   const installationDatesOptions = records.map(record =>
-    createDropDownOption(record["Date d'installation ou livraison"])
+    createDropDownOption(record[installationDateHeader])
   );
   const soldProductsOptions = records.map(record =>
-    createDropDownOption(record["Produit vendu"])
+    createDropDownOption(record[soldProductsHeader])
   );
 
   return (
     <div className="records-filter">
       <div>
         <Dropdown
-          placeholder="Date d'appel"
+          placeholder={callDateHeader}
           noResultsMessage="Pas d'autre choix"
           fluid
           multiple
@@ -93,14 +107,14 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
           search
           selection
           disabled={records.length == 0}
-          onChange={(_, { value }) => setCallDates(value)}
+          onChange={(_, { value }) => setCallDate(value)}
           options={uniqueOptions(callDatesOptions)}
         />
       </div>
 
       <div>
         <Dropdown
-          placeholder="Produit vendu"
+          placeholder={soldProductsHeader}
           noResultsMessage="Pas d'autre choix"
           fluid
           multiple
@@ -115,7 +129,7 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
 
       <div>
         <Dropdown
-          placeholder="Date d'installation ou livraison"
+          placeholder={installationDateHeader}
           noResultsMessage="Pas d'autre choix"
           fluid
           multiple
@@ -123,7 +137,7 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
           search
           selection
           disabled={records.length == 0}
-          onChange={(_, { value }) => setInstallationDates(value)}
+          onChange={(_, { value }) => setInstallationDate(value)}
           options={uniqueOptions(installationDatesOptions)}
         />
       </div>

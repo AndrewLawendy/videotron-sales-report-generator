@@ -5,7 +5,9 @@ import "./style.scss";
 
 import Logo from "../../assets/logo-videotron-icon.png";
 import NameAndPr from "../../components/NameAndPr/NameAndPr.jsx";
-import { EMPLOYEE } from "../../constants";
+import { headers, EMPLOYEE } from "../../constants";
+
+const [, pr, agentName] = headers;
 
 const Header = () => {
   const [modalOpen, setModelOpen] = useState(false);
@@ -38,7 +40,7 @@ const Header = () => {
             <img src={Logo} alt="Videotron Logo" />
           </div>
           <h2>
-            {employee["Nom du conseiller"]}, {employee.PR}
+            {employee[agentName]}, {employee[pr]}
           </h2>
         </div>
         <Button

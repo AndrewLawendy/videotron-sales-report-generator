@@ -5,7 +5,21 @@ import { store } from "react-notifications-component";
 import AddRecordFrom from "../AddRecordForm/AddRecordForm.jsx";
 
 import { getLocalItem, getDateFormat, formatPhoneNumber } from "../../utils";
-import { RECORDS, EMPLOYEE } from "../../constants";
+import { headers, RECORDS, EMPLOYEE } from "../../constants";
+
+const [
+  callDate,
+  ,
+  ,
+  ,
+  ,
+  ,
+  soldProducts,
+  phoneNumber,
+  ,
+  helixAccountNumber,
+  installationDate
+] = headers;
 
 const AddRecord = ({
   setAddRecordModalOpen,
@@ -30,16 +44,14 @@ const AddRecord = ({
 
   const formatRecord = record => {
     const clonedRecord = { ...record };
-    clonedRecord["Date d'appel"] = getDateFormat(clonedRecord["Date d'appel"]);
-    clonedRecord["Date d'installation ou livraison"] = getDateFormat(
-      clonedRecord["Date d'installation ou livraison"]
+    clonedRecord[callDate] = getDateFormat(clonedRecord[callDate]);
+    clonedRecord[installationDate] = getDateFormat(
+      clonedRecord[installationDate]
     );
-    clonedRecord["Numéro de téléphone"] = formatPhoneNumber(
-      clonedRecord["Numéro de téléphone"]
-    );
+    clonedRecord[phoneNumber] = formatPhoneNumber(clonedRecord[phoneNumber]);
 
-    if (clonedRecord["Produit vendu"] === "RTMO")
-      delete clonedRecord["Numéro de compte Hélix"];
+    if (clonedRecord[soldProducts] === "RTMO")
+      delete clonedRecord[helixAccountNumber];
 
     return clonedRecord;
   };

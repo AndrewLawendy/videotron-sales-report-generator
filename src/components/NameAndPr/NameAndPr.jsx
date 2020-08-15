@@ -5,17 +5,20 @@ import * as Yup from "yup";
 import { Label, Button } from "semantic-ui-react";
 import { SemanticFormikInputField } from "../Input/Input.jsx";
 
+import { headers } from "../../constants";
+const [, pr, agentName] = headers;
+
 const userSchema = Yup.object().shape({
-  "Nom du conseiller": Yup.string().required("Votre nom est obligatoire"),
-  PR: Yup.number().required("Votre PR est obligatoire")
+  [agentName]: Yup.string().required("Votre nom est obligatoire"),
+  [pr]: Yup.number().required("Votre PR est obligatoire")
 });
 
 const NameAndPr = ({ submit, employee }) => {
   return (
     <Formik
       initialValues={{
-        "Nom du conseiller": employee["Nom du conseiller"],
-        PR: employee.PR
+        [agentName]: employee[agentName],
+        [pr]: employee[pr]
       }}
       validationSchema={userSchema}
       onSubmit={submit}
@@ -24,27 +27,27 @@ const NameAndPr = ({ submit, employee }) => {
         <Form>
           <div className="field-wrapper">
             <Field
-              name="Nom du conseiller"
+              name={agentName}
               label="Prenom"
               component={SemanticFormikInputField}
             />
-            {errors["Nom du conseiller"] && touched["Nom du conseiller"] ? (
+            {errors[agentName] && touched[agentName] ? (
               <Label basic color="red" pointing>
-                {errors["Nom du conseiller"]}
+                {errors[agentName]}
               </Label>
             ) : null}
           </div>
 
           <div className="field-wrapper">
             <Field
-              name="PR"
-              label="PR"
+              name={pr}
+              label={pr}
               type="number"
               component={SemanticFormikInputField}
             />
-            {errors.PR && touched.PR ? (
+            {errors[pr] && touched[pr] ? (
               <Label basic color="red" pointing>
-                {errors.PR}
+                {errors[pr]}
               </Label>
             ) : null}
           </div>

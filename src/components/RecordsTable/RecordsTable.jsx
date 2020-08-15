@@ -5,6 +5,8 @@ import { Table } from "semantic-ui-react";
 import { revertStringDateFormatToDate } from "../../utils.js";
 import { headers } from "../../constants";
 
+const [callDate, , , , , , , , , , installationDate] = headers;
+
 const RecordsTable = ({
   records,
   setSelectedRecord,
@@ -14,13 +16,11 @@ const RecordsTable = ({
   const editRecord = (record, index) => {
     const formatRecordToFormik = record => {
       const clonedRecord = { ...record };
-      clonedRecord["Date d'appel"] = revertStringDateFormatToDate(
-        clonedRecord["Date d'appel"]
+      clonedRecord[callDate] = revertStringDateFormatToDate(
+        clonedRecord[callDate]
       );
-      clonedRecord[
-        "Date d'installation ou livraison"
-      ] = revertStringDateFormatToDate(
-        clonedRecord["Date d'installation ou livraison"]
+      clonedRecord[installationDate] = revertStringDateFormatToDate(
+        clonedRecord[installationDate]
       );
 
       return clonedRecord;
