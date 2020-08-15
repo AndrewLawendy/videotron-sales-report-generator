@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Container, Button, Message, Confirm, Modal } from "semantic-ui-react";
-import xlsxParser from "xlsx-parse-json";
 import select from "select";
 import { store } from "react-notifications-component";
 
@@ -16,6 +15,7 @@ import {
 import AddRecord from "../AddRecord/AddRecord.jsx";
 import RecordsFilter from "../RecordsFilter/RecordsFilter.jsx";
 import RecordsTable from "../RecordsTable/RecordsTable.jsx";
+import UploadFile from "../UploadFile/UploadFile.jsx";
 
 const FileViewer = () => {
   const [records, setRecords] = useState(getLocalItem(RECORDS));
@@ -65,16 +65,6 @@ const FileViewer = () => {
     setRecords([]);
   }
 
-  const parse = event => {
-    const { target } = event;
-    const file = target.files[0];
-    xlsxParser.onFileSelection(file).then(data => {
-      const firstSheet = Object.keys(data)[0];
-      updateRecords(data[firstSheet]);
-      target.value = "";
-    });
-  };
-
   const formatRecord = record => {
     const clonedRecord = { ...record };
     clonedRecord["Date d'appel"] = getDateFormat(clonedRecord["Date d'appel"]);
@@ -123,20 +113,11 @@ const FileViewer = () => {
         <Button onClick={() => setAddRecordModalOpen(true)} positive>
           Ajouter nouvelle Vente
         </Button>
-        <input
-          disabled={isFiltered || records.length > 0}
-          type="file"
-          id="addActualFile"
-          onChange={parse}
+        <UploadFile
+          records={records}
+          isFiltered={isFiltered}
+          updateRecords={updateRecords}
         />
-        <label
-          className={`ui secondary button ${
-            isFiltered || records.length > 0 ? "disabled" : ""
-          }`}
-          htmlFor="addActualFile"
-        >
-          Telecharger un fichier actuel
-        </label>
         <Button
           onClick={() => {
             setRemoveDialogOpen(true);
