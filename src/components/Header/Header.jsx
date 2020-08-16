@@ -3,7 +3,6 @@ import { Button, Modal } from "semantic-ui-react";
 
 import "./style.scss";
 
-import Logo from "../../assets/logo-videotron-icon.png";
 import NameAndPr from "../../components/NameAndPr/NameAndPr.jsx";
 import { headers, EMPLOYEE } from "../../constants";
 
@@ -35,14 +34,9 @@ const Header = () => {
   return (
     <React.Fragment>
       <header>
-        <div className="profile">
-          <div className="logo-container">
-            <img src={Logo} alt="Videotron Logo" />
-          </div>
-          <h2>
-            {employee[agentName]}, {employee[pr]}
-          </h2>
-        </div>
+        <h2>
+          {employee[agentName]}, {employee[pr]}
+        </h2>
         <Button
           className="edit-btn"
           content="Modifier Nom ou Pr"
