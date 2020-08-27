@@ -36,7 +36,7 @@
     "clear-build-cache": "rm -rf .cache/ dist/",
     "start": "parcel src/index.html --no-source-maps",
     "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html --no-source-maps",
+    "build": "parcel build src/index.html -d prod/ --public-url ./ --no-source-maps",
     "format": "prettier --write \"src/**/*.{js,jsx,scss}\"",
     "lint": "eslint \"src/**/*.{js,jsx,scss}\" --quiet"
   },
