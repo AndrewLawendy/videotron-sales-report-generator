@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Message } from "semantic-ui-react";
 
 import "./style.scss";
@@ -14,7 +14,7 @@ import RecordsTable from "../RecordsTable/RecordsTable.jsx";
 import InstallationDayReminder from "../InstallationDayReminder/InstallationDayReminder.jsx";
 
 const FileViewer = () => {
-  const [records, setRecords] = useState(getLocalItem(RECORDS));
+  const [records, setRecords] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
   const [addRecordModalOpen, setAddRecordModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(undefined);
@@ -30,6 +30,14 @@ const FileViewer = () => {
     setLocalItem(RECORDS, formattedRecords);
     setRecords(formattedRecords);
   }
+
+  function fetchInitialRecords() {
+    getLocalItem(RECORDS).then((val = []) => {
+      setRecords(val);
+    });
+  }
+
+  useEffect(fetchInitialRecords, []);
 
   return (
     <React.Fragment>

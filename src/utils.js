@@ -1,11 +1,12 @@
-export function getLocalItem(key) {
-  const stringItem = localStorage.getItem(key);
-  return stringItem != null ? JSON.parse(stringItem) : [];
+import { get, set } from "idb-keyval";
+
+export async function getLocalItem(key) {
+  const value = await get(key);
+  return value;
 }
 
-export function setLocalItem(key, value) {
-  const stringRecords = JSON.stringify(value);
-  localStorage.setItem(key, stringRecords);
+export async function setLocalItem(key, value) {
+  await set(key, value);
 }
 
 /**

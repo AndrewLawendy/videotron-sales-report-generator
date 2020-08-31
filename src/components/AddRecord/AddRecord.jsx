@@ -56,10 +56,10 @@ const AddRecord = ({
     return clonedRecord;
   };
 
-  const submitRecord = values => {
-    const records = getLocalItem(RECORDS);
+  const submitRecord = async values => {
+    const records = await getLocalItem(RECORDS);
     if (selectedRecord == undefined) {
-      const employee = getLocalItem(EMPLOYEE);
+      const employee = await getLocalItem(EMPLOYEE);
       const newRecord = formatRecord({ ...employee, ...values });
       records.push(newRecord);
       showAddRecordSuccess("Votre vente est ajoutée avec succès");

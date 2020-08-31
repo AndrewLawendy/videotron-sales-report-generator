@@ -26,8 +26,8 @@ const InstallationDayReminder = () => {
     return reminder > new Date().getTime();
   };
 
-  const checkTodaysRecords = () => {
-    const allRecords = getLocalItem(RECORDS);
+  const checkTodaysRecords = async () => {
+    const allRecords = await getLocalItem(RECORDS);
     const formattedDate = getDateFormat(new Date());
     const filteredRecords = allRecords.filter(
       record => record[installationDate] == formattedDate

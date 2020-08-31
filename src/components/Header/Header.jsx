@@ -5,6 +5,7 @@ import "./style.scss";
 
 import NameAndPr from "../../components/NameAndPr/NameAndPr.jsx";
 import { headers, EMPLOYEE } from "../../constants";
+import { getLocalItem, setLocalItem } from "../../utils";
 
 const [, pr, agentName] = headers;
 
@@ -12,21 +13,23 @@ const Header = () => {
   const [modalOpen, setModelOpen] = useState(false);
   const [employee, updateEmployee] = useState({});
 
-  const getNameAndPr = () => {
-    const nameAndPr = localStorage.getItem(EMPLOYEE);
+  const getNameAndPr = async () => {
+    const nameAndPr = await getLocalItem(EMPLOYEE);
     if (nameAndPr != null) {
-      const nameAndPrObject = JSON.parse(nameAndPr);
-      updateEmployee(nameAndPrObject);
+      updateEmployee(nameAndPr);
     } else {
       setModelOpen(true);
     }
   };
 
-  useEffect(getNameAndPr, []);
+  useEffect(() => {
+    const getNameAndPrFn = getNameAndPr;
+
+    getNameAndPrFn();
+  }, []);
 
   const submit = values => {
-    const stringifiedValues = JSON.stringify(values);
-    localStorage.setItem(EMPLOYEE, stringifiedValues);
+    setLocalItem(EMPLOYEE, values);
     updateEmployee(values);
     setModelOpen(false);
   };
