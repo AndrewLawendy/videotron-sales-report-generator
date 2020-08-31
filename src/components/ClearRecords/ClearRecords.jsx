@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Button, Confirm } from "semantic-ui-react";
+import { clear } from "idb-keyval";
 
-import { setLocalItem } from "../../utils";
-import { RECORDS } from "../../constants";
+import { recordsStore } from "../../constants";
 
 const ClearRecords = ({ disabled, setRecords }) => {
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   function clearRecords() {
-    setLocalItem(RECORDS, []);
+    clear(recordsStore);
     setRecords([]);
   }
 

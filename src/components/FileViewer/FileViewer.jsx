@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Message } from "semantic-ui-react";
 
 import "./style.scss";
-import { RECORDS, headers } from "../../constants";
+import { RECORDS, headers, recordsStore } from "../../constants";
 import { getLocalItem, setLocalItem } from "../../utils";
 
 import UploadFile from "../UploadFile/UploadFile.jsx";
@@ -27,12 +27,12 @@ const FileViewer = () => {
         return acc;
       }, {});
     });
-    setLocalItem(RECORDS, formattedRecords);
+    setLocalItem(RECORDS, formattedRecords, recordsStore);
     setRecords(formattedRecords);
   }
 
   function fetchInitialRecords() {
-    getLocalItem(RECORDS).then((val = []) => {
+    getLocalItem(RECORDS, recordsStore).then((val = []) => {
       setRecords(val);
     });
   }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react";
 
-import { headers, RECORDS } from "../../constants";
+import { headers, RECORDS, recordsStore } from "../../constants";
 import { getLocalItem } from "../../utils";
 
 import "./style.scss";
@@ -26,13 +26,14 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
   const [installationDate, setInstallationDate] = useState([]);
   const [soldProducts, setSoldProducts] = useState([]);
 
-  const getRecords = async () => {
-    const records = (await getLocalItem(RECORDS)) || [];
-    setStateRecords(records);
+  const getRecords = () => {
+    getLocalItem(RECORDS, recordsStore).then((records = []) => {
+      setStateRecords(records);
+    });
   };
 
   const filter = async () => {
-    const allRecords = (await getLocalItem(RECORDS)) || [];
+    const allRecords = (await getLocalItem(RECORDS, recordsStore)) || [];
     const filterByCallDates = record => {
       if (callDate.length > 0) {
         return callDate.includes(record);
@@ -74,11 +75,7 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
     setIsFiltered(isFiltered());
   };
 
-  useEffect(() => {
-    const getRecordsFn = getRecords;
-
-    getRecordsFn();
-  }, []);
+  useEffect(getRecords, []);
   useEffect(() => {
     const filterFn = filter;
 

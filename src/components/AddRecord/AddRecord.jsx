@@ -5,7 +5,13 @@ import { store } from "react-notifications-component";
 import AddRecordFrom from "../AddRecordForm/AddRecordForm.jsx";
 
 import { getLocalItem, getDateFormat, formatPhoneNumber } from "../../utils";
-import { headers, RECORDS, EMPLOYEE } from "../../constants";
+import {
+  headers,
+  RECORDS,
+  EMPLOYEE,
+  employeeStore,
+  recordsStore
+} from "../../constants";
 
 const [
   callDate,
@@ -57,9 +63,9 @@ const AddRecord = ({
   };
 
   const submitRecord = async values => {
-    const records = await getLocalItem(RECORDS);
+    const records = (await getLocalItem(RECORDS, recordsStore)) || [];
     if (selectedRecord == undefined) {
-      const employee = await getLocalItem(EMPLOYEE);
+      const employee = await getLocalItem(EMPLOYEE, employeeStore);
       const newRecord = formatRecord({ ...employee, ...values });
       records.push(newRecord);
       showAddRecordSuccess("Votre vente est ajoutée avec succès");

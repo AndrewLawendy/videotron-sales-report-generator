@@ -1,12 +1,12 @@
 import { get, set } from "idb-keyval";
 
-export async function getLocalItem(key) {
-  const value = await get(key);
+export async function getLocalItem(key, store) {
+  const value = await get(key, store);
   return value;
 }
 
-export async function setLocalItem(key, value) {
-  await set(key, value);
+export async function setLocalItem(key, value, store) {
+  await set(key, value, store);
 }
 
 /**
