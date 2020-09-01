@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Modal } from "semantic-ui-react";
 
-import { headers, RECORDS, recordsStore } from "../../constants";
+import { headers, RECORDS } from "../../constants";
 import { getLocalItem, getDateFormat } from "../../utils";
 const [
   ,
@@ -27,7 +27,7 @@ const InstallationDayReminder = () => {
   };
 
   const checkTodaysRecords = async () => {
-    const allRecords = await getLocalItem(RECORDS, recordsStore);
+    const allRecords = await getLocalItem(RECORDS);
     const formattedDate = getDateFormat(new Date());
     const filteredRecords = allRecords.filter(
       record => record[installationDate] == formattedDate

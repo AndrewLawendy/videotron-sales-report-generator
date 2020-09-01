@@ -1,10 +1,5 @@
-import { Store } from "idb-keyval";
-
 export const EMPLOYEE = "employee";
 export const RECORDS = "records";
-
-export const employeeStore = new Store(`${EMPLOYEE}-db`, `${EMPLOYEE}-store`);
-export const recordsStore = new Store(`${RECORDS}-db`, `${RECORDS}-store`);
 
 export const headers = [
   "Date d'appel",

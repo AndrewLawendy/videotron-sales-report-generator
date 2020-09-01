@@ -4,7 +4,7 @@ import { Button, Modal } from "semantic-ui-react";
 import "./style.scss";
 
 import NameAndPr from "../../components/NameAndPr/NameAndPr.jsx";
-import { headers, EMPLOYEE, employeeStore } from "../../constants";
+import { headers, EMPLOYEE } from "../../constants";
 import { getLocalItem, setLocalItem } from "../../utils";
 
 const [, pr, agentName] = headers;
@@ -14,7 +14,7 @@ const Header = () => {
   const [employee, updateEmployee] = useState({});
 
   const getNameAndPr = async () => {
-    const nameAndPr = await getLocalItem(EMPLOYEE, employeeStore);
+    const nameAndPr = await getLocalItem(EMPLOYEE);
     if (nameAndPr != null) {
       updateEmployee(nameAndPr);
     } else {
@@ -29,7 +29,7 @@ const Header = () => {
   }, []);
 
   const submit = values => {
-    setLocalItem(EMPLOYEE, values, employeeStore);
+    setLocalItem(EMPLOYEE, values);
     updateEmployee(values);
     setModelOpen(false);
   };
