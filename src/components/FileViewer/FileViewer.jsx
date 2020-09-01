@@ -58,7 +58,11 @@ const FileViewer = () => {
         <ClearRecords disabled={records.length === 0} setRecords={setRecords} />
         <CopyRecords disabled={records.length === 0} />
 
-        <RecordsFilter setRecords={setRecords} setIsFiltered={setIsFiltered} />
+        <RecordsFilter
+          setRecords={setRecords}
+          setIsFiltered={setIsFiltered}
+          records={records}
+        />
         {!isFiltered && records.length == 0 && (
           <Message
             info

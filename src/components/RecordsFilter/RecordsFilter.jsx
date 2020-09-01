@@ -20,17 +20,10 @@ const [
   installationDateHeader
 ] = headers;
 
-const RecordsFilter = ({ setRecords, setIsFiltered }) => {
-  const [stateRecords, setStateRecords] = useState([]);
+const RecordsFilter = ({ setRecords, setIsFiltered, records = [] }) => {
   const [callDate, setCallDate] = useState([]);
   const [installationDate, setInstallationDate] = useState([]);
   const [soldProducts, setSoldProducts] = useState([]);
-
-  const getRecords = () => {
-    getLocalItem(RECORDS).then((records = []) => {
-      setStateRecords(records);
-    });
-  };
 
   const filter = async () => {
     const allRecords = (await getLocalItem(RECORDS)) || [];
@@ -75,7 +68,6 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
     setIsFiltered(isFiltered());
   };
 
-  useEffect(getRecords, []);
   useEffect(() => {
     const filterFn = filter;
 
@@ -95,13 +87,13 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
     });
   };
 
-  const callDatesOptions = stateRecords.map(record =>
+  const callDatesOptions = records.map(record =>
     createDropDownOption(record[callDateHeader])
   );
-  const installationDatesOptions = stateRecords.map(record =>
+  const installationDatesOptions = records.map(record =>
     createDropDownOption(record[installationDateHeader])
   );
-  const soldProductsOptions = stateRecords.map(record =>
+  const soldProductsOptions = records.map(record =>
     createDropDownOption(record[soldProductsHeader])
   );
 
@@ -116,7 +108,7 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
           clearable
           search
           selection
-          disabled={stateRecords.length == 0}
+          disabled={records.length == 0}
           onChange={(_, { value }) => setCallDate(value)}
           options={uniqueOptions(callDatesOptions)}
         />
@@ -131,7 +123,7 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
           clearable
           search
           selection
-          disabled={stateRecords.length == 0}
+          disabled={records.length == 0}
           onChange={(_, { value }) => setSoldProducts(value)}
           options={uniqueOptions(soldProductsOptions)}
         />
@@ -146,7 +138,7 @@ const RecordsFilter = ({ setRecords, setIsFiltered }) => {
           clearable
           search
           selection
-          disabled={stateRecords.length == 0}
+          disabled={records.length == 0}
           onChange={(_, { value }) => setInstallationDate(value)}
           options={uniqueOptions(installationDatesOptions)}
         />
