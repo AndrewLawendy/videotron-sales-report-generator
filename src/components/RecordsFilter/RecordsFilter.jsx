@@ -25,34 +25,38 @@ const RecordsFilter = ({ setRecords, setIsFiltered, records = [] }) => {
   const [installationDate, setInstallationDate] = useState([]);
   const [soldProducts, setSoldProducts] = useState([]);
 
-  const filter = async () => {
+  const filter = async ({
+    callDateValue = callDate,
+    installationDateValue = installationDate,
+    soldProductsValue = soldProducts
+  }) => {
     const allRecords = (await getLocalItem(RECORDS)) || [];
     const filterByCallDates = record => {
-      if (callDate.length > 0) {
-        return callDate.includes(record);
+      if (callDateValue.length > 0) {
+        return callDateValue.includes(record);
       }
       return true;
     };
 
     const filterByInstallationDates = record => {
-      if (installationDate.length > 0) {
-        return installationDate.includes(record);
+      if (installationDateValue.length > 0) {
+        return installationDateValue.includes(record);
       }
       return true;
     };
 
     const filterBySoldProducts = record => {
-      if (soldProducts.length > 0) {
-        return soldProducts.includes(record);
+      if (soldProductsValue.length > 0) {
+        return soldProductsValue.includes(record);
       }
       return true;
     };
 
     const isFiltered = () => {
       return (
-        callDate.length > 0 ||
-        soldProducts.length > 0 ||
-        installationDate.length > 0
+        callDateValue.length > 0 ||
+        soldProductsValue.length > 0 ||
+        installationDateValue.length > 0
       );
     };
 
@@ -67,12 +71,6 @@ const RecordsFilter = ({ setRecords, setIsFiltered, records = [] }) => {
     setRecords(filteredRecords);
     setIsFiltered(isFiltered());
   };
-
-  useEffect(() => {
-    const filterFn = filter;
-
-    filterFn();
-  }, [callDate, soldProducts, installationDate]);
 
   const createDropDownOption = token => ({
     key: token,
@@ -109,7 +107,10 @@ const RecordsFilter = ({ setRecords, setIsFiltered, records = [] }) => {
           search
           selection
           disabled={records.length == 0}
-          onChange={(_, { value }) => setCallDate(value)}
+          onChange={(_, { value }) => {
+            setCallDate(value);
+            filter({ callDateValue: value });
+          }}
           options={uniqueOptions(callDatesOptions)}
         />
       </div>
@@ -124,7 +125,10 @@ const RecordsFilter = ({ setRecords, setIsFiltered, records = [] }) => {
           search
           selection
           disabled={records.length == 0}
-          onChange={(_, { value }) => setSoldProducts(value)}
+          onChange={(_, { value }) => {
+            setSoldProducts(value);
+            filter({ soldProductsValue: value });
+          }}
           options={uniqueOptions(soldProductsOptions)}
         />
       </div>
@@ -139,7 +143,10 @@ const RecordsFilter = ({ setRecords, setIsFiltered, records = [] }) => {
           search
           selection
           disabled={records.length == 0}
-          onChange={(_, { value }) => setInstallationDate(value)}
+          onChange={(_, { value }) => {
+            setInstallationDate(value);
+            filter({ installationDateValue: value });
+          }}
           options={uniqueOptions(installationDatesOptions)}
         />
       </div>
