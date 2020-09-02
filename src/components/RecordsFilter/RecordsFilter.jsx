@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Dropdown } from "semantic-ui-react";
 
 import { headers, RECORDS } from "../../constants";
