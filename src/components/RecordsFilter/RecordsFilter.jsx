@@ -107,10 +107,17 @@ const RecordsFilter = ({ setRecords, setIsFiltered, records = [] }) => {
           search
           selection
           disabled={records.length == 0}
-          onChange={(_, { value }) => {
-            setCallDate(value);
-            filter({ callDateValue: value });
-          }}
+          onChange={
+            /**
+             * @param  {any} _
+             * @param {Object} props
+             * @param  {any[]} props.value
+             */
+            (_, { value }) => {
+              setCallDate(value);
+              filter({ callDateValue: value });
+            }
+          }
           options={uniqueOptions(callDatesOptions)}
         />
       </div>
@@ -125,10 +132,17 @@ const RecordsFilter = ({ setRecords, setIsFiltered, records = [] }) => {
           search
           selection
           disabled={records.length == 0}
-          onChange={(_, { value }) => {
-            setSoldProducts(value);
-            filter({ soldProductsValue: value });
-          }}
+          onChange={
+            /**
+             * @param  {any} _
+             * @param {Object} props
+             * @param  {any[]} props.value
+             */
+            (_, { value }) => {
+              setSoldProducts(value);
+              filter({ soldProductsValue: value });
+            }
+          }
           options={uniqueOptions(soldProductsOptions)}
         />
       </div>
@@ -143,10 +157,17 @@ const RecordsFilter = ({ setRecords, setIsFiltered, records = [] }) => {
           search
           selection
           disabled={records.length == 0}
-          onChange={(_, { value }) => {
-            setInstallationDate(value);
-            filter({ installationDateValue: value });
-          }}
+          onChange={
+            /**
+             * @param  {any} _
+             * @param {Object} props
+             * @param  {any[]} props.value
+             */
+            (_, { value }) => {
+              setInstallationDate(value);
+              filter({ installationDateValue: value });
+            }
+          }
           options={uniqueOptions(installationDatesOptions)}
         />
       </div>
