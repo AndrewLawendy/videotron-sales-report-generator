@@ -11,6 +11,8 @@ function createWindow() {
       nodeIntegration: true
     }
   });
+  win.removeMenu();
+  win.maximize();
 
   // and load the index.html of the app.
   win.loadURL(
@@ -20,7 +22,7 @@ function createWindow() {
   );
 
   // Open the DevTools.
-  win.webContents.openDevTools();
+  isDev && win.webContents.openDevTools();
 }
 
 // This method will be called when Electron has finished
