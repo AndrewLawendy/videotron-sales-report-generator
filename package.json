@@ -45,7 +45,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx,scss}\"",
     "lint": "eslint \"src/**/*.{js,jsx,scss}\" --quiet",
     "build": "yarn parcel-build && electron-builder",
-    "start": "concurrently \"cross-env BROWSER=none yarn parcel-dev\" \"wait-on http://localhost:1234 & electron .\""
+    "start": "concurrently \"cross-env BROWSER=none yarn parcel-dev\" \"wait-on http://localhost:1234 && electron .\""
   },
   "browserslist": [
     "last 2 Chrome versions"
