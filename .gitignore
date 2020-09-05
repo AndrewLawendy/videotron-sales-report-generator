@@ -108,3 +108,4 @@ prod/
 .DS_Store
 coverage/
 .vscode/
+data-base.json
