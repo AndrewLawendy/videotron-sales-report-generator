@@ -16,7 +16,7 @@ function createWindow() {
   win.loadURL(
     isDev
       ? "http://localhost:1234"
-      : `file://${path.join(__dirname, "../dist/index.html")}`
+      : `file://${path.join(__dirname, "../prod/index.html")}`
   );
 
   // Open the DevTools.
