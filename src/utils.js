@@ -7,11 +7,13 @@ const createDb = () => {
 };
 
 const readDb = () => {
-  fs.readFile(dbPath, err => {
-    if (err) createDb();
-  });
-  const db = fs.readFileSync(dbPath, "utf8");
-  return JSON.parse(db);
+  if (fs.existsSync(dbPath)) {
+    const db = fs.readFileSync(dbPath, "utf8");
+    return JSON.parse(db);
+  } else {
+    createDb();
+    return {};
+  }
 };
 
 export async function getLocalItem(key) {
