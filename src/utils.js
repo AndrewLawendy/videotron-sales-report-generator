@@ -1,12 +1,30 @@
-import { get, set } from "idb-keyval";
+const fs = window.require("fs");
+const path = window.require("path");
+const dbPath = `${path.join(__dirname, "../data-base.json")}`;
 
-export async function getLocalItem(key, store) {
-  const value = await get(key, store);
-  return value;
+const createDb = () => {
+  fs.writeFileSync(dbPath, "{}");
+};
+
+const readDb = () => {
+  fs.readFile(dbPath, err => {
+    if (err) createDb();
+  });
+  const db = fs.readFileSync(dbPath, "utf8");
+  return JSON.parse(db);
+};
+
+export async function getLocalItem(key) {
+  const db = readDb();
+
+  return db[key];
 }
 
-export async function setLocalItem(key, value, store) {
-  await set(key, value, store);
+export async function setLocalItem(key, value) {
+  const db = readDb();
+
+  db[key] = value;
+  fs.writeFileSync(dbPath, JSON.stringify(db));
 }
 
 /**
