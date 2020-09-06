@@ -1,5 +1,5 @@
 {
-  "name": "videotron-sales-report-generator",
+  "name": "Ventes-PAV",
   "version": "1.0.0",
   "description": "",
   "main": "src/electron.js",
