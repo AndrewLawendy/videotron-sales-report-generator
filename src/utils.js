@@ -1,6 +1,6 @@
 const fs = window.require("fs");
 const path = window.require("path");
-const dbPath = `${path.join(__dirname, "../data-base.json")}`;
+const dbPath = `${path.join("./data-base.json")}`;
 
 const createDb = () => {
   fs.writeFileSync(dbPath, "{}");
