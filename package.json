@@ -46,6 +46,16 @@
     "build": "yarn parcel-build && electron-builder",
     "start": "concurrently \"cross-env BROWSER=none yarn parcel-dev\" \"wait-on http://localhost:1234 && electron .\""
   },
+  "build": {
+    "appId": "ventes-pav.videotron.com",
+    "productName": "Ventes Pav",
+    "win": {
+      "target": "portable"
+    },
+    "directories": {
+      "output": "electron/ventes-pav"
+    }
+  },
   "browserslist": [
     "last 2 Chrome versions"
   ],

@@ -105,7 +105,7 @@ dist
 
 dist/
 prod/
+electron/
 .DS_Store
 coverage/
 .vscode/
-data-base.json
