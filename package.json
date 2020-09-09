@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/electron.js",
   "dependencies": {
+    "cron": "^1.8.2",
     "electron-is-dev": "^1.2.0",
     "formik": "^2.1.5",
     "node-sass": "^4.14.1",
