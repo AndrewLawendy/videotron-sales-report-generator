@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Modal } from "semantic-ui-react";
+import { CronJob } from "cron";
 
 import { headers, RECORDS } from "../../constants";
 import { getLocalItem, getDateFormat } from "../../utils";
@@ -20,11 +21,6 @@ const [
 const InstallationDayReminder = () => {
   const [todaysRecords, setTodaysRecords] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-  const reminderDate = new Date().setHours(14, 0, 0, 0);
-
-  const isEarly = reminder => {
-    return reminder > new Date().getTime();
-  };
 
   const checkTodaysRecords = async () => {
     const allRecords = await getLocalItem(RECORDS);
@@ -33,21 +29,14 @@ const InstallationDayReminder = () => {
       record => record[installationDate] == formattedDate
     );
 
-    setTodaysRecords(filteredRecords);
-    setOpenModal(true);
-
-    setTimeout(checkTodaysRecords, 24 * 60 * 60 * 1000); // Every day
+    if (filteredRecords.length > 0) {
+      setTodaysRecords(filteredRecords);
+      setOpenModal(true);
+    }
   };
 
   const initPage = () => {
-    let timeDifference;
-    if (isEarly(reminderDate)) {
-      timeDifference = reminderDate - new Date().getTime();
-    } else {
-      const tomorrowsReminder = new Date().setHours(38, 0, 0, 0);
-      timeDifference = tomorrowsReminder - new Date().getTime();
-    }
-    setTimeout(checkTodaysRecords, timeDifference);
+    new CronJob("0 0 14 * * *", checkTodaysRecords, null, true);
   };
 
   useEffect(initPage, []);
